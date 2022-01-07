@@ -1,16 +1,16 @@
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import path from 'path';
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import path from 'path'
+
+// 引入mockjs插件
+import { viteMockServe } from 'vite-plugin-mock'
 
 // 按需导入第三方UI库组件
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
-import viteCompression from 'vite-plugin-compression';
-
-// vite引入模块
-// const requireModules = import.meta.globEager("./modules/*.js")
+import viteCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -22,7 +22,7 @@ export default defineConfig({
     terserOptions: {
       compress: {
         // warnings: false,
-        drop_console: true,  //打包时删除console
+        drop_console: true, //打包时删除console
         drop_debugger: true, //打包时删除 debugger
         pure_funcs: ['console.log'],
       },
@@ -46,20 +46,21 @@ export default defineConfig({
     open: true,
     host: 'localhost',
     port: 3000,
-    proxy: {//代理
+    proxy: {
+      //代理
       '/api': {
         target: 'http://192.168.3.10:5000',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '')
-      }
-    }
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
   },
   // 定义别名
   alias: {
     // 如果报错提示 __dirname 找不到 则需要 yarn add @types/node --save-dev
-    "@": path.resolve(__dirname, "src"),
-    "coms": path.resolve(__dirname, "src/components"),
-    "utils": path.resolve(__dirname, "src/utils"),
+    '@': path.resolve(__dirname, 'src'),
+    coms: path.resolve(__dirname, 'src/components'),
+    utils: path.resolve(__dirname, 'src/utils'),
   },
   plugins: [
     vue(),
@@ -71,5 +72,8 @@ export default defineConfig({
     }),
     // 打包压缩，主要是本地gzip，如果服务器配置压缩也可以
     viteCompression(),
-  ]
+    viteMockServe({
+      supportTs: false, //如果使用 js发开，则需要配置 supportTs 为 false
+    }),
+  ],
 })

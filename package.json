@@ -2,7 +2,7 @@
   "name": "vue3-vite",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "cross-env NODE_ENV=development vite",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -19,11 +19,14 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.0.0",
+    "cross-env": "^7.0.3",
+    "mockjs": "^1.1.0",
     "unplugin-auto-import": "^0.5.5",
     "unplugin-element-plus": "^0.2.0",
     "unplugin-vue-components": "^0.17.11",
     "vite": "^2.7.2",
     "vite-plugin-compression": "^0.4.0",
+    "vite-plugin-mock": "^2.9.6",
     "vuex-persistedstate": "^4.1.0"
   }
 }

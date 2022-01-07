@@ -1,4 +1,4 @@
-# Vue 3 + Vite
+# Vue 3 + Vite + Mock
 ## 本项目主要采用Composition API写法开发，但也会涉及Options API写法，主要是为了用来作比较
 Options API：我们会在一个vue文件中methods，computed，watch，data中等等定义属性和方法，共同处理页面逻辑。
 

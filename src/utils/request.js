@@ -1,77 +1,94 @@
 import axios from 'axios';
 import qs from 'qs';
 
-// axios.defaults.baseURL = ''  //正式
-axios.defaults.baseURL = 'http://localhost:3000' //测试
-//post请求头
-axios.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8";
-//允许跨域携带cookie信息
-axios.defaults.withCredentials = true; 
-//设置超时
-axios.defaults.timeout = 15000;
+const devBaseUrl = 'http://localhost:3000'; //测试
+const proBaseUrl = 'http://192.168.3.10:5000'; //正式
+let url;
+import.meta.env.MODE === 'development'
+  ? (url = devBaseUrl)
+  : (url = proBaseUrl);
 
-axios.interceptors.request.use(
-    config => {
-        return config;
-    },
-    error => {
-        return Promise.reject(error);
-    }
+// 创建axios实例
+const service = axios.create({
+  // 在请求地址前面加上baseURL
+  baseURL: url,
+  // false 不跨域  true 跨域
+  withCredentials: true,
+  // 设置超时
+  timeout: 5000,
+});
+
+// 请求拦截
+service.interceptors.request.use(
+  (config) => {
+    // 指定请求令牌
+    // if (store.getters.token) {
+    // // 自定义令牌的字段名为X-Token，根据咱们后台再做修改
+    // config.headers["X-Token"] = store.getters.token;
+    // }
+    config.headers['X-Token'] = 'my token';
+
+    return config;
+  },
+  (error) => {
+    // 请求错误的统一处理
+    console.log(error);
+
+    return Promise.reject(error);
+  }
 );
 
-axios.interceptors.response.use(
-    response => {
-        if (response.status == 200) {
-            return Promise.resolve(response);
-        } else {
-            return Promise.reject(response);
-        }
-    },
-    error => {
-        ElMessage({
-            showClose: true,
-            message: '请求异常',
-            type: 'error',
+// 响应拦截器
+service.interceptors.response.use(
+  /**
+   * 通过判断状态码统一处理响应，根据情况修改
+   * 同时也可以通过HTTP状态码判断请求结果
+   */
+  (response) => {
+    const res = response.data;
+    // 如果状态码不是200则认为有错误
+    if (res.code !== 200) {
+      ElMessage({
+        message: error.message || 'Error',
+        type: 'error',
+        duration: 2 * 1000,
+      });
+
+      // 50008: 非法令牌; 50012: 其他客户端已登入; 50014: 令牌过期;
+      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+        // 重新登录
+        ElMessageBox.confirm('您已登出, 请重新登录', 'Warning', {
+          confirmButtonText: '重新登录',
+          cancelButtonText: '取消',
+          type: 'warning',
+          center: true,
+        })
+          .then(() => {
+            // store.dispatch('user/resetToken').then(() => {
+            //   location.reload()
+            // })
           })
+          .catch(() => {
+            ElMessage({
+              type: 'info',
+              message: '已取消',
+            });
+          });
+      }
+      return Promise.reject(new Error(res.message || 'Error'));
+    } else {
+      return res;
     }
+  },
+  (error) => {
+    console.log('err' + error); // for debug
+    ElMessage({
+      message: error.message,
+      type: 'error',
+      duration: 2 * 1000,
+    });
+    return Promise.reject(error);
+  }
 );
 
-
-export default {
-    /**
-     * @param {String} url 
-     * @param {Object} data 
-     * @returns Promise
-     */
-    post(url, data) {
-        return new Promise((resolve, reject) => {
-            axios({
-                    method: 'post',
-                    url,
-                    data: qs.stringify(data),
-                })
-                .then(res => {
-                    resolve(res.data)
-                })
-                .catch(err => {
-                    reject(err)
-                });
-        })
-    },
-
-    get(url, data) {
-        return new Promise((resolve, reject) => {
-            axios({
-                    method: 'get',
-                    url,
-                    params: data,
-                })
-                .then(res => {
-                    resolve(res.data)
-                })
-                .catch(err => {
-                    reject(err)
-                })
-        })
-    }
-};
+export default service;
