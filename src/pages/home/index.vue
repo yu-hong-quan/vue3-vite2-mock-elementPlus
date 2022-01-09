@@ -5,12 +5,10 @@ const msg = "前端人，前端魂";
 </script>
 
 <template>
-  <div class="home_title">首页</div>
-  <HelloWorld :msg="msg" />
+  <!-- <HelloWorld :msg="msg" /> -->
+  <router-view></router-view>
 </template>
 
 <style lang="less" scoped>
-.home_title {
-  font-size: 30px;
-}
+
 </style>

@@ -1,9 +1,5 @@
 <script setup>
-ElNotification.info({
-  title: "卷起来吧，前端人",
-  message: "bug间，代码灰飞烟灭",
-  duration: 0,
-});
+
 </script>
 
 <template>
@@ -11,9 +7,12 @@ ElNotification.info({
 </template>
 
 <style>
-#app {
+@import "@/styles/common.less";
+#app,body,html{
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  height: 100%;
 }
 </style>

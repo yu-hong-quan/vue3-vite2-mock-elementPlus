@@ -1,20 +1,125 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from "vue-router";
 
 const routes = [
-  { path: '/', redirect: '/home' },
+  { path: "/", redirect: "/home" },
   {
-    path: '/login',
-    name: 'login',
+    path: "/login",
+    name: "login",
+    meta: {
+			title: '登录',
+		},
     component: () =>
-      import(
-        /* webpackChunkName: 'RouterModuleJs' */ '@/pages/login/index.vue'
-      ),
+      import(/* webpackChunkName: 'login' */ "@/pages/login/index.vue"),
   },
   {
-    path: '/home',
-    name: 'home',
+    path: "/home",
+    name: "home",
     component: () =>
-      import(/* webpackChunkName: 'RouterModuleJs' */ '@/pages/home/index.vue'),
+      import(/* webpackChunkName: 'home' */ "@/pages/home/index.vue"),
+    children: [
+      {
+        path: "/dashboard",
+        name: "dashboard",
+        meta: {
+          title: "系统首页",
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: 'dashboard' */ "@/pages/home/dashboard/index.vue"
+          ),
+      },
+      {
+        path: "/table",
+        name: "basetable",
+        meta: {
+          title: "表格",
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "basetable" */ "@/pages/home/baseTable/index.vue"
+          ),
+      },
+      {
+        path: "/tableDemo",
+        name: "tableDemo",
+        meta: {
+          title: "封装表格组件",
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "tableDemo" */ "@/pages/home/table/index.vue"
+          ),
+      },
+      {
+        path: "/form",
+        name: "baseform",
+        meta: {
+          title: "表单",
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "baseform" */ "@/pages/home/baseForm/index.vue"
+          ),
+      },
+      {
+        path: "/tabs",
+        name: "tabs",
+        meta: {
+          title: "tab标签",
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "tabs" */ "@/pages/home/tabs/index.vue"
+          ),
+      },
+      {
+        path: "/permission",
+        name: "permission",
+        meta: {
+          title: "权限管理",
+          permission: true,
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "permission" */ "@/pages/home/permission/index.vue"
+          ),
+      },
+      {
+        path: "/upload",
+        name: "upload",
+        meta: {
+          title: "上传插件",
+          permission: true,
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "upload" */ "@/pages/home/upload/index.vue"
+          ),
+      },
+      {
+        path: "/404",
+        name: "404",
+        meta: {
+          title: "找不到页面",
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "404" */ "@/pages/home/404/index.vue"
+          ),
+      },
+      {
+        path: "/403",
+        name: "403",
+        meta: {
+          title: "没有权限",
+          permission: true,
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "403" */ "@/pages/home/403/index.vue"
+          ),
+      },
+    ],
   },
 ];
 

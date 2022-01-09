@@ -1,5 +1,12 @@
 <script setup>
-import { ref, reactive, getCurrentInstance, onBeforeMount, onMounted, watch } from "vue";
+import {
+  ref,
+  reactive,
+  getCurrentInstance,
+  onBeforeMount,
+  onMounted,
+  watch,
+} from "vue";
 import { useRouter } from "vue-router";
 import hooks from "@/hooks/index"; // 引入自定义hooks
 import { useStore } from "vuex";
