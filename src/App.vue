@@ -1,6 +1,4 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
   <router-view></router-view>
@@ -8,7 +6,10 @@
 
 <style>
 @import "@/styles/common.less";
-#app,body,html{
+@import "@/styles/main.less";
+#app,
+body,
+html {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
