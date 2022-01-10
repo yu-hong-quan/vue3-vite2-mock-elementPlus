@@ -8,7 +8,6 @@ import vSidebar from "coms/layouts/Sidebar.vue";
 import vTags from "coms/layouts/Tags.vue";
 
 const { layout } = useStore().state;
-console.log(layout);
 const tagsList = computed(() => layout.tagsList.map((item) => item.name));
 const collapse = computed(() => layout.collapse);
 </script>

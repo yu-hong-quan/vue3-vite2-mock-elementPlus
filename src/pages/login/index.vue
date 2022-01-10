@@ -80,22 +80,22 @@ const rules = {
 };
 
 const submitForm = () => {
-	login.value.validate(valid => {
-		if (valid) {
-      showGlobalLoading()
-			setTimeout(() => {
-        hideGlobalLoading()
-        localStorage.setItem('ms_username', userInfo.username)
-        ElMessage.success('登录成功')
-        router.push('/')
-			}, 1000)
-		} else {
-			ElMessage.error('请输入账号和密码')
-			hideGlobalLoading()
-			return false
-		}
-	})
-}
+  login.value.validate((valid) => {
+    if (valid) {
+      showGlobalLoading();
+      setTimeout(() => {
+        hideGlobalLoading();
+        localStorage.setItem("ms_username", userInfo.username);
+        ElMessage.success("登录成功");
+        router.push("/");
+      }, 1000);
+    } else {
+      ElMessage.error("请输入账号和密码");
+      hideGlobalLoading();
+      return false;
+    }
+  });
+};
 </script>
 
 <style lang="less" scoped>
@@ -154,7 +154,7 @@ const submitForm = () => {
     }
   }
 }
-/deep/ .el-button{
+/deep/ .el-button {
   height: 30px;
 }
 </style>

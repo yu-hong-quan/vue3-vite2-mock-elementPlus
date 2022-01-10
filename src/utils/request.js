@@ -40,10 +40,6 @@ service.interceptors.request.use(
 
 // 响应拦截器
 service.interceptors.response.use(
-  /**
-   * 通过判断状态码统一处理响应，根据情况修改
-   * 同时也可以通过HTTP状态码判断请求结果
-   */
   (response) => {
     const res = response.data;
     // 如果状态码不是200则认为有错误
@@ -77,7 +73,8 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'));
     } else {
-      return res;
+      console.log('成功');
+      return Promise.resolve(res);
     }
   },
   (error) => {
@@ -91,4 +88,49 @@ service.interceptors.response.use(
   }
 );
 
-export default service;
+export default {
+  /**
+   * get方法，对应get请求
+   * @param {String} url [请求的url地址]
+   * @param {Object} params [请求时携带的参数]
+   * @param {Object} headers  请求相关参数设置
+   */
+  get(url, params, headers) {
+    headers = headers || {};
+    return new Promise((resolve, reject) => {
+      service
+        .get(url, {
+          params: params,
+          headers: headers,
+        })
+        .then((res) => {
+          console.log(res);
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err.data);
+        });
+    });
+  },
+  /**
+   * post方法，对应post请求
+   * @param {String} url [请求的url地址]
+   * @param {Object} params [请求时携带的参数]
+   * @param {Object} headers  请求相关参数设置
+   */
+  post(url, params, headers) {
+    headers = headers || {};
+    return new Promise((resolve, reject) => {
+      service
+        .post(url, params, {
+          headers: headers,
+        })
+        .then((res) => {
+          resolve(res.data);
+        })
+        .catch((err) => {
+          reject(err.data);
+        });
+    });
+  },
+};

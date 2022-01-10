@@ -14,7 +14,7 @@ const mockList = [
   { id: 6, name: 'white', age: 18 },
   { id: 7, name: 'peter', age: 18 },
   { id: 8, name: 'james', age: 18 },
-]
+];
 
 module.exports = [
   {
@@ -24,7 +24,7 @@ module.exports = [
       return {
         code: 200,
         data: { smCode: '123' },
-      }
+      };
     },
   },
   {
@@ -34,7 +34,69 @@ module.exports = [
       return {
         code: 200,
         data: { id: 1, name: 'tom', age: 18 },
-      }
+      };
+    },
+  },
+  {
+    url: '/api/getSubMenuList',
+    type: 'get',
+    response: () => {
+      return {
+        code: 200,
+        data: {
+          list: [
+            {
+              icon: 'el-icon-s-home',
+              index: 'dashboard',
+              title: '系统首页',
+            },
+            {
+              icon: 'el-icon-s-order',
+              index: 'table',
+              title: '基础表格',
+            },
+            {
+              icon: 'el-icon-document-copy',
+              index: 'tabs',
+              title: 'tab选项卡',
+            },
+            {
+              icon: 'el-icon-document',
+              index: '3',
+              title: '表单相关',
+              subs: [
+                {
+                  index: 'form',
+                  title: '基本表单',
+                },
+                {
+                  index: 'tabledemo',
+                  title: '表格组件',
+                },
+                {
+                  index: 'upload',
+                  title: '文件上传',
+                },
+              ],
+            },
+            {
+              icon: 'el-icon-warning',
+              index: '7',
+              title: '错误处理',
+              subs: [
+                {
+                  index: 'permission',
+                  title: '权限测试',
+                },
+                {
+                  index: '404',
+                  title: '404页面',
+                },
+              ],
+            },
+          ],
+        },
+      };
     },
   },
   {
@@ -42,17 +104,17 @@ module.exports = [
     type: 'get',
     response: (config) => {
       // 从查询参数中获取分页、过滤关键词等参数
-      const { page = 1, limit = 5 } = config.query
+      const { page = 1, limit = 5 } = config.query;
       // 分页
       const data = mockList.filter(
         (item, index) => index < limit * page && index >= limit * (page - 1)
-      )
+      );
 
       return {
         code: 200,
         data,
         total: mockList.length,
-      }
+      };
     },
   },
   {
@@ -62,7 +124,7 @@ module.exports = [
       // 直接返回
       return {
         code: 200,
-      }
+      };
     },
   },
   {
@@ -71,7 +133,7 @@ module.exports = [
     response: () => {
       return {
         code: 200,
-      }
+      };
     },
   },
   {
@@ -80,7 +142,7 @@ module.exports = [
     response: () => {
       return {
         code: 200,
-      }
+      };
     },
   },
-]
+];

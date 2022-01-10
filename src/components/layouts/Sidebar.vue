@@ -9,16 +9,21 @@
       active-text-color="#20a0ff"
       unique-opened
       router
-      ><!-- 判断是否存在子菜单 -->
+    >
       <template v-for="item in sidebarList">
-        <template v-if="item.subs">
-          <!-- <el-submenu :index="item.index" :key="item.index"> -->
-          <!-- <template #title>
+        <template v-if="item.subs"
+          ><!-- 判断是否存在子菜单 -->
+          <el-sub-menu :index="item.index" :key="item.index">
+            <template #title>
               <i :class="item.icon"></i>
               <span>{{ item.title }}</span>
             </template>
             <template v-for="subItem in item.subs">
-              <el-submenu v-if="subItem.subs" :index="subItem.index" :key="subItem.index">
+              <el-sub-menu
+                v-if="subItem.subs"
+                :index="subItem.index"
+                :key="subItem.index"
+              >
                 <template #title>{{ subItem.title }}</template>
                 <el-menu-item
                   v-for="(threeItem, i) in subItem.subs"
@@ -26,12 +31,12 @@
                   :index="threeItem.index"
                   >{{ threeItem.title }}</el-menu-item
                 >
-              </el-submenu>
+              </el-sub-menu>
               <el-menu-item v-else :index="subItem.index" :key="subItem">{{
                 subItem.title
               }}</el-menu-item>
-            </template> -->
-          <!-- </el-submenu> -->
+            </template>
+          </el-sub-menu>
         </template>
         <template v-else>
           <el-menu-item :index="item.index" :key="item.index">
@@ -45,65 +50,38 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted, getCurrentInstance, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+// 获取当前组件的上下文
+const { proxy } = getCurrentInstance(); // 此方法在开发环境以及生产环境下都能放到组件上下文对象（推荐）
+
 const $route = useRoute();
 const $store = useStore();
-const sidebarList = [
-  {
-    icon: "el-icon-s-home",
-    index: "dashboard",
-    title: "系统首页",
-  },
-  {
-    icon: "el-icon-s-order",
-    index: "table",
-    title: "基础表格",
-  },
-  {
-    icon: "el-icon-document-copy",
-    index: "tabs",
-    title: "tab选项卡",
-  },
-  {
-    icon: "el-icon-document",
-    index: "3",
-    title: "表单相关",
-    subs: [
-      {
-        index: "form",
-        title: "基本表单",
-      },
-      {
-        index: "tabledemo",
-        title: "表格组件",
-      },
-      {
-        index: "upload",
-        title: "文件上传",
-      },
-    ],
-  },
-  {
-    icon: "el-icon-warning",
-    index: "7",
-    title: "错误处理",
-    subs: [
-      {
-        index: "permission",
-        title: "权限测试",
-      },
-      {
-        index: "404",
-        title: "404页面",
-      },
-    ],
-  },
-];
+let sidebarList = ref([]);
 
 let onRoutes = computed(() => $route.path.replace("/", ""));
 let collapse = computed(() => $store.state.layout.collapse);
+
+// watch(
+//   () => [sidebarList.value],
+//   (newVal, oldVal) => {
+//     //此时返回的是数组,按下标获取对应值
+//     console.log(newVal, oldVal);
+//   },
+//   { deep: true } //深度监听,深度监听用于监听一个复杂的对象
+// );
+
+onMounted(() => {
+  proxy.$axios
+    .get(`/api/getSubMenuList`)
+    .then((res) => {
+      sidebarList.value = res.list;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 </script>
 
 <style lang="less" scoped>
