@@ -1,4 +1,14 @@
-<script setup></script>
+<script setup>
+import { onMounted } from "vue";
+onMounted(() => {
+  ElNotification.info({
+    title: "卷起来吧，前端人",
+    message: "bug间，代码灰飞烟灭",
+    duration: 0,
+    offset: 100,
+  });
+});
+</script>
 
 <template>
   <router-view></router-view>
@@ -15,5 +25,8 @@ html {
   -moz-osx-font-smoothing: grayscale;
   width: 100%;
   height: 100%;
+}
+.el-notification__group .el-icon {
+  position: absolute !important;
 }
 </style>

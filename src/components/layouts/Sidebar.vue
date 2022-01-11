@@ -1,5 +1,6 @@
 <template>
   <div class="sidebar">
+    <!-- <component :is="HomeFilled"></component> -->
     <el-menu
       :default-active="onRoutes"
       :collapse="collapse"
@@ -15,7 +16,9 @@
           ><!-- 判断是否存在子菜单 -->
           <el-sub-menu :index="item.index" :key="item.index">
             <template #title>
-              <i :class="item.icon"></i>
+              <el-icon>
+                <component :is="item.icon"></component>
+              </el-icon>
               <span>{{ item.title }}</span>
             </template>
             <template v-for="subItem in item.subs">
@@ -40,7 +43,9 @@
         </template>
         <template v-else>
           <el-menu-item :index="item.index" :key="item.index">
-            <i :class="item.icon"></i>
+            <el-icon>
+              <component :is="item.icon"></component>
+            </el-icon>
             <template #title>{{ item.title }}</template>
           </el-menu-item>
         </template>
@@ -50,6 +55,13 @@
 </template>
 
 <script setup>
+import {
+  HomeFilled,
+  DocumentCopy,
+  List,
+  Document,
+  WarningFilled,
+} from "@element-plus/icons-vue";
 import { computed, onMounted, getCurrentInstance, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";

@@ -1,10 +1,3 @@
-/*
- * @Descripttion:
- * @Author: voanit
- * @Date: 2022-01-07 11:56:33
- * @LastEditors: voanit
- * @LastEditTime: 2022-01-07 15:35:42
- */
 const mockList = [
   { id: 1, name: 'tom', age: 18 },
   { id: 2, name: 'jerry', age: 18 },
@@ -46,22 +39,22 @@ module.exports = [
         data: {
           list: [
             {
-              icon: 'el-icon-s-home',
+              icon: 'home-filled',
               index: 'dashboard',
               title: '系统首页',
             },
             {
-              icon: 'el-icon-s-order',
+              icon: 'list',
               index: 'table',
               title: '基础表格',
             },
             {
-              icon: 'el-icon-document-copy',
+              icon: 'document-copy',
               index: 'tabs',
               title: 'tab选项卡',
             },
             {
-              icon: 'el-icon-document',
+              icon: 'document',
               index: '3',
               title: '表单相关',
               subs: [
@@ -80,7 +73,7 @@ module.exports = [
               ],
             },
             {
-              icon: 'el-icon-warning',
+              icon: 'warning-filled',
               index: '7',
               title: '错误处理',
               subs: [

@@ -102,7 +102,7 @@ const handleCommand = (command) => {
   }
   .header-right {
     float: right;
-    padding-right: 20px;
+    padding-right: 50px;
   }
   .header-user-con {
     display: flex;
@@ -158,5 +158,11 @@ const handleCommand = (command) => {
       text-align: center;
     }
   }
+}
+</style>
+
+<style>
+.btn-bell .el-icon {
+  position: relative !important;
 }
 </style>
