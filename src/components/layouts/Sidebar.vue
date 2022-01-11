@@ -1,6 +1,5 @@
 <template>
   <div class="sidebar">
-    <!-- <component :is="HomeFilled"></component> -->
     <el-menu
       :default-active="onRoutes"
       :collapse="collapse"
