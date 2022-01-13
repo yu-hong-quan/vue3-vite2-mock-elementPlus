@@ -39,22 +39,22 @@ module.exports = [
         data: {
           list: [
             {
-              icon: 'home-filled',
+              icon: 'HomeFilled',
               index: 'dashboard',
               title: '系统首页',
             },
             {
-              icon: 'list',
+              icon: 'BorderlessTableOutlined',
               index: 'table',
               title: '基础表格',
             },
             {
-              icon: 'document-copy',
+              icon: 'TableOutlined',
               index: 'tabs',
               title: 'tab选项卡',
             },
             {
-              icon: 'document',
+              icon: 'formOutlined',
               index: '3',
               title: '表单相关',
               subs: [
@@ -73,7 +73,7 @@ module.exports = [
               ],
             },
             {
-              icon: 'warning-filled',
+              icon: 'WarningFilled',
               index: '7',
               title: '错误处理',
               subs: [

@@ -46,7 +46,6 @@ let tagsList = computed(() => $store.state.layout.tagsList);
 let showTags = computed(() => tagsList.value.length > 0);
 
 const isActive = (path) => {
-  console.log("active:", path, $route.fullPath);
   return path === $route.fullPath;
 };
 
