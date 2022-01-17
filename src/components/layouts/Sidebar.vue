@@ -54,13 +54,6 @@
 </template>
 
 <script setup>
-import {
-  HomeFilled,
-  DocumentCopy,
-  List,
-  Document,
-  WarningFilled,
-} from "@element-plus/icons-vue";
 import { computed, onMounted, getCurrentInstance, reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
