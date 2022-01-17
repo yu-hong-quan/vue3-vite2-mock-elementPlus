@@ -1,22 +1,23 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import path from 'path'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import path from 'path';
 
 // 引入mockjs插件
-import { viteMockServe } from 'vite-plugin-mock'
+import { viteMockServe } from 'vite-plugin-mock';
 
 // 按需导入第三方UI库组件
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
-import viteCompression from 'vite-plugin-compression'
+import viteCompression from 'vite-plugin-compression';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/',
   build: {
-    outDir: 'buildProject', // 打包后文件包名称
-    chunkSizeWarningLimit: 500,
+    outDir: 'static', // 打包后文件包名称
+    chunkSizeWarningLimit: 500, //提高超大静态资源警告门槛
     minify: 'terser',
     cssCodeSplit: false, // 如果设置为false，整个项目中的所有 CSS 将被提取到一个 CSS 文件中
     terserOptions: {
@@ -27,8 +28,7 @@ export default defineConfig({
         pure_funcs: ['console.log'],
       },
       output: {
-        // 去掉注释内容
-        comments: true,
+        comments: true, //去掉注释内容
       },
     },
     rollupOptions: {
@@ -71,9 +71,15 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
     // 打包压缩，主要是本地gzip，如果服务器配置压缩也可以
-    viteCompression(),
+    viteCompression({
+      verbose: true,
+      disable: false,
+      threshold: 10240,
+      algorithm: 'gzip',
+      ext: '.gz',
+    }),
     viteMockServe({
       supportTs: false, //如果使用 js发开，则需要配置 supportTs 为 false
     }),
   ],
-})
+});

@@ -1,0 +1,1 @@
+import{_ as e}from"./plugin-vue_export-helper.21dcd24c.js";import{l as r,m as t}from"./vue.3a04ecf9.js";const a={id:"table"};var o=e({},[["render",function(e,o){return r(),t("div",a,"table")}]]);export{o as default};
