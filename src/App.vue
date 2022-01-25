@@ -4,8 +4,9 @@ onMounted(() => {
   ElNotification.info({
     title: "卷起来吧，前端人",
     message: "bug间，代码灰飞烟灭",
-    duration: 0,
-    offset: 100,
+    "show-close": false,
+    duration: 10000,
+    offset: 104,
   });
 });
 </script>
@@ -28,5 +29,8 @@ html {
 }
 .el-notification__group .el-icon {
   position: absolute !important;
+}
+.el-notification.right {
+  right: 9px;
 }
 </style>
