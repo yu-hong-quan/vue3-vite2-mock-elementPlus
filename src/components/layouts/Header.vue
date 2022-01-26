@@ -5,7 +5,7 @@
       <el-icon v-if="!collapse"><Fold /></el-icon>
       <el-icon v-else><Expand /></el-icon>
     </div>
-    <div class="logo">Vue3 Element Plus Vite System</div>
+    <div class="logo">Bug间，代码灰飞烟灭</div>
 
     <div class="header-right">
       <div class="header-user-con">

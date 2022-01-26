@@ -8,7 +8,7 @@
               <component :is="userIncon"></component>
             </el-icon>
             <div class="left_info">
-              <span>尊敬的{{ userName }}</span>
+              <span>尊敬的{{ role }}</span>
               <span
                 >基于Vue3 + Vite + Element Plus + Ant Design Vue
                 开发的后台管理系统模板</span
@@ -81,7 +81,10 @@
         <div class="clearfix">
           <span>信息中心</span>
           <div>
-            <el-button style="float: right; margin-right: 50px" type="danger"
+            <el-button
+              style="float: right; margin-right: 50px"
+              type="danger"
+              @click="allDelect"
               >批量删除</el-button
             >
           </div>
@@ -109,7 +112,7 @@
                 >
                 <div class="icon-list">
                   <edit-outlined />
-                  <delete-outlined />
+                  <delete-outlined @click="itemDelect" />
                 </div>
               </div>
             </template>
@@ -122,138 +125,17 @@
 
 <script setup>
 import { onMounted, getCurrentInstance, reactive, computed } from "vue";
-let userIncon = "user-outlined";
-let userName = localStorage.getItem("ms_username");
-let option = {};
+import hooks from "@/hooks/index"; // 引入自定义hooks
+
 // 获取当前组件的上下文
 const { proxy } = getCurrentInstance(); // 此方法在开发环境以及生产环境下都能放到组件上下文对象（推荐）
+// 对自定义hooks进行解构获取内部实例方法
+let { showMessageBox } = hooks();
 
-const name = localStorage.getItem("ms_username");
-const todoList = reactive([
-  {
-    title: "未处理订单30条",
-    status: false,
-  },
-  {
-    title: "未处理订单30条",
-    status: false,
-  },
-  {
-    title: "客户投诉问题10条",
-    status: false,
-  },
-  {
-    title: "未处理订单30条",
-    status: false,
-  },
-  {
-    title: "未处理订单30条",
-    status: false,
-  },
-  {
-    title: "客户投诉问题10条",
-    status: false,
-  },
-  {
-    title: "未处理订单30条",
-    status: false,
-  },
-  {
-    title: "未处理订单30条",
-    status: false,
-  },
-  {
-    title: "客户投诉问题10条",
-    status: false,
-  },
-  {
-    title: "未处理订单30条",
-    status: false,
-  },
-  {
-    title: "未处理订单30条",
-    status: false,
-  },
-  {
-    title: "客户投诉问题10条",
-    status: false,
-  },
-]);
-const data = [
-  {
-    name: "2018/09/04",
-    value: 1083,
-  },
-  {
-    name: "2018/09/05",
-    value: 941,
-  },
-  {
-    name: "2018/09/06",
-    value: 1139,
-  },
-  {
-    name: "2018/09/07",
-    value: 816,
-  },
-  {
-    name: "2018/09/08",
-    value: 327,
-  },
-  {
-    name: "2018/09/09",
-    value: 228,
-  },
-  {
-    name: "2018/09/10",
-    value: 1065,
-  },
-];
-const options = {
-  type: "bar",
-  title: {
-    text: "最近一周各品类销售图",
-  },
-  xRorate: 25,
-  labels: ["周一", "周二", "周三", "周四", "周五"],
-  datasets: [
-    {
-      label: "家电",
-      data: [234, 278, 270, 190, 230],
-    },
-    {
-      label: "百货",
-      data: [164, 178, 190, 135, 160],
-    },
-    {
-      label: "食品",
-      data: [144, 198, 150, 235, 120],
-    },
-  ],
-};
-const options2 = {
-  type: "line",
-  title: {
-    text: "最近几个月各品类销售趋势图",
-  },
-  labels: ["6月", "7月", "8月", "9月", "10月"],
-  datasets: [
-    {
-      label: "家电",
-      data: [234, 278, 270, 190, 230],
-    },
-    {
-      label: "百货",
-      data: [164, 178, 150, 135, 160],
-    },
-    {
-      label: "食品",
-      data: [74, 118, 200, 235, 90],
-    },
-  ],
-};
-
-const role = computed(() => (name === "admin" ? "超级管理员" : "普通用户"));
+let userIncon = "user-outlined";
+let userName = localStorage.getItem("ms_username");
+const todoList = reactive([]);
+const role = computed(() => (userName === "admin" ? "超级管理员" : "普通用户"));
 
 const changeDate = () => {
   const now = new Date().getTime();
@@ -261,6 +143,27 @@ const changeDate = () => {
     const date = new Date(now - (6 - index) * 86400000);
     item.name = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
   });
+};
+
+const allDelect = () => {
+  showMessageBox("温馨提示", "error", "是否确认删除已选中的数据", true, true);
+};
+
+const itemDelect = () => {
+  showMessageBox("温馨提示", "error", "是否确认删除", true, true);
+};
+
+// 获取站内信数据
+const getListData = () => {
+  proxy.$axios
+    .get(`/api/unprocessedOrders`)
+    .then((res) => {
+      console.log(res);
+      todoList.push(...res.list);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 // 挂在完成时
@@ -308,6 +211,8 @@ onMounted(() => {
       },
     ],
   });
+
+  getListData();
 });
 </script>
 

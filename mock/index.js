@@ -9,6 +9,57 @@ const mockList = [
   { id: 8, name: 'james', age: 18 },
 ];
 
+const unprocessedOrdersList = [
+  {
+    title: '未处理订单30条',
+    status: false,
+  },
+  {
+    title: '未处理订单30条',
+    status: false,
+  },
+  {
+    title: '客户投诉问题10条',
+    status: false,
+  },
+  {
+    title: '未处理订单30条',
+    status: false,
+  },
+  {
+    title: '未处理订单30条',
+    status: false,
+  },
+  {
+    title: '客户投诉问题10条',
+    status: false,
+  },
+  {
+    title: '未处理订单30条',
+    status: false,
+  },
+  {
+    title: '未处理订单30条',
+    status: false,
+  },
+  {
+    title: '客户投诉问题10条',
+    status: false,
+  },
+  {
+    title: '未处理订单30条',
+    status: false,
+  },
+  {
+    title: '未处理订单30条',
+    status: false,
+  },
+  {
+    title: '客户投诉问题10条',
+    status: false,
+  },
+];
+
 module.exports = [
   {
     url: '/api/captcha/sent',
@@ -88,6 +139,18 @@ module.exports = [
               ],
             },
           ],
+        },
+      };
+    },
+  },
+  {
+    url: '/api/unprocessedOrders',
+    type: 'get',
+    response: () => {
+      return {
+        code: 200,
+        data: {
+          list: unprocessedOrdersList,
         },
       };
     },
