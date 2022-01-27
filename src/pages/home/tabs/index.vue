@@ -2,6 +2,6 @@
   <div id="tabs">tabs</div>
 </template>
 
-<script setup></script>
+<script setup name="tabs"></script>
 
 <style lang="less" scoped></style>

@@ -2,6 +2,6 @@
   <div id="tableComponent">tableComponent</div>
 </template>
 
-<script setup></script>
+<script setup name="tableComponent"></script>
 
 <style lang="less" scoped></style>

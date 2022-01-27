@@ -1,4 +1,4 @@
-<script setup>
+<script setup name="home">
 import { computed } from "vue";
 import { useStore } from "vuex";
 // import HelloWorld from "coms/common/HelloWorld.vue";

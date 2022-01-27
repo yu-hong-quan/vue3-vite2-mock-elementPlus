@@ -5,6 +5,9 @@ import path from 'path';
 // 引入mockjs插件
 import { viteMockServe } from 'vite-plugin-mock';
 
+// 引入插件即可直接在script标签上定义name
+import VueSetupExtend from 'vite-plugin-vue-setup-extend';
+
 // 按需导入第三方UI库组件
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
@@ -64,6 +67,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    VueSetupExtend(),
     AutoImport({
       resolvers: [ElementPlusResolver()],
     }),

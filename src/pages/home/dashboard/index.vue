@@ -123,7 +123,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup name="dashboard">
 import { onMounted, getCurrentInstance, reactive, computed } from "vue";
 import hooks from "@/hooks/index"; // 引入自定义hooks
 
