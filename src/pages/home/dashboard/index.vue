@@ -137,13 +137,6 @@ let userName = localStorage.getItem("ms_username");
 const todoList = reactive([]);
 const role = computed(() => (userName === "admin" ? "超级管理员" : "普通用户"));
 
-const changeDate = () => {
-  const now = new Date().getTime();
-  data.forEach((item, index) => {
-    const date = new Date(now - (6 - index) * 86400000);
-    item.name = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
-  });
-};
 
 const allDelect = () => {
   showMessageBox("温馨提示", "error", "是否确认删除已选中的数据", true, true);
