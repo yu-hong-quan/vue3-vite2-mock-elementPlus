@@ -73,53 +73,59 @@
         </el-card>
       </el-col>
     </el-row>
-    <div class="home_bottom">
-      <div class="bottom_left">
-        <div id="myChart" :style="{ width: '600px', height: '550px' }"></div>
-      </div>
-
-      <div class="bottom_right">
-        <div class="clearfix">
-          <span>信息中心</span>
-          <div>
-            <el-button
-              style="float: right; margin-right: 50px"
-              type="danger"
-              @click="allDelect"
-              >批量删除</el-button
+    <el-row>
+      <el-col>
+        <div class="home_bottom">
+          <div class="bottom_right">
+            <div class="clearfix">
+              <span>信息中心</span>
+              <div>
+                <el-button
+                  style="float: right; margin-right: 50px"
+                  type="danger"
+                  @click="allDelect"
+                  >批量删除</el-button
+                >
+              </div>
+            </div>
+            <el-table
+              :show-header="false"
+              :data="todoList"
+              style="width: 100%"
+              max-height="500px"
             >
+              <el-table-column width="40">
+                <template #default="scope">
+                  <el-checkbox v-model="scope.row.status"></el-checkbox>
+                </template>
+              </el-table-column>
+              <el-table-column>
+                <template #default="scope">
+                  <div class="todo-item">
+                    <span
+                      :class="{
+                        'todo-item-del': scope.row.status,
+                      }"
+                      >{{ scope.row.title }}</span
+                    >
+                    <div class="icon-list">
+                      <edit-outlined />
+                      <delete-outlined @click="itemDelect" />
+                    </div>
+                  </div>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+          <div class="bottom_left">
+            <div
+              id="myChart"
+              :style="{ width: '600px', height: '550px' }"
+            ></div>
           </div>
         </div>
-        <el-table
-          :show-header="false"
-          :data="todoList"
-          style="width: 100%"
-          max-height="500px"
-        >
-          <el-table-column width="40">
-            <template #default="scope">
-              <el-checkbox v-model="scope.row.status"></el-checkbox>
-            </template>
-          </el-table-column>
-          <el-table-column>
-            <template #default="scope">
-              <div class="todo-item">
-                <span
-                  :class="{
-                    'todo-item-del': scope.row.status,
-                  }"
-                  >{{ scope.row.title }}</span
-                >
-                <div class="icon-list">
-                  <edit-outlined />
-                  <delete-outlined @click="itemDelect" />
-                </div>
-              </div>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -237,9 +243,9 @@ onMounted(() => {
 
 .home_bottom {
   background: #fff;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  // display: flex;
+  // justify-content: flex-start;
+  // align-items: center;
   border-radius: 3px;
   transition: all 0.5s;
   overflow: hidden;
@@ -248,9 +254,11 @@ onMounted(() => {
     height: 600px;
     padding-right: 50px;
     border-right: 1px solid #eee;
+    float: right;
   }
   .bottom_right {
-    width: 100%;
+    float: left;
+    width: 995px;
     padding: 20px;
     box-sizing: border-box;
     .clearfix {
