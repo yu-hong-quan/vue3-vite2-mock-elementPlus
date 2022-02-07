@@ -77,6 +77,7 @@
       <div class="bottom_left">
         <div id="myChart" :style="{ width: '600px', height: '550px' }"></div>
       </div>
+
       <div class="bottom_right">
         <div class="clearfix">
           <span>信息中心</span>
@@ -89,7 +90,6 @@
             >
           </div>
         </div>
-
         <el-table
           :show-header="false"
           :data="todoList"
@@ -242,6 +242,7 @@ onMounted(() => {
   align-items: center;
   border-radius: 3px;
   transition: all 0.5s;
+  overflow: hidden;
   .bottom_left {
     width: 600px;
     height: 600px;
@@ -275,6 +276,7 @@ onMounted(() => {
 
 <style scoped>
 .el-row {
+  width: 100%;
   margin-bottom: 20px;
 }
 
@@ -344,6 +346,7 @@ onMounted(() => {
 }
 .mgb20 {
   margin-bottom: 20px;
+  margin-left: 0 !important;
 }
 .todo-item {
   display: flex;
@@ -356,6 +359,7 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   color: #24adf3;
+  margin-right: 30px;
 }
 .todo-item-del {
   text-decoration: line-through;
