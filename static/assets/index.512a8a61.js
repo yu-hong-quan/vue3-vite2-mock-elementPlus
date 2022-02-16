@@ -1,0 +1,1 @@
+import{_ as r}from"./plugin-vue_export-helper.21dcd24c.js";import{l as e,m as o}from"./vue.8a0c43f5.js";const a={id:"errorPage404"};var t=r({},[["render",function(r,t){return e(),o("div",a,"404")}]]);export{t as default};

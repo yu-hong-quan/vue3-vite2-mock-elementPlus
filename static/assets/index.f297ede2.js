@@ -1,0 +1,1 @@
+import{_ as r}from"./plugin-vue_export-helper.21dcd24c.js";import{l as e,m as o}from"./vue.8a0c43f5.js";const a={id:"upload"};var d=r({},[["render",function(r,d){return e(),o("div",a,"upload")}]]);export{d as default};

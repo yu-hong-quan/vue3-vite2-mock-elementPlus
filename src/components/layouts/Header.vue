@@ -36,10 +36,15 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <a href="" target="_blank">
+              <a
+                href="https://github.com/15017872695/vue3-vite2-mock-elementPlus"
+                target="_blank"
+              >
                 <el-dropdown-item>项目仓库</el-dropdown-item>
               </a>
-              <el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
+              <el-dropdown-item divided command="loginout"
+                >退出登录</el-dropdown-item
+              >
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -55,13 +60,14 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 const $store = useStore();
 const router = useRouter();
-
 let collapse = computed(() => $store.state.layout.collapse);
 let message = ref(2);
 const username = computed(() => {
   let username = localStorage.getItem("ms_username");
   return username ? username : name;
 });
+
+
 
 // 侧边栏折叠
 const collapseChage = () => {

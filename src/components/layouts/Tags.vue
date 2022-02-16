@@ -7,7 +7,9 @@
         :class="{ active: isActive(item.path) }"
         :key="index"
       >
-        <router-link :to="item.path" class="tags-li-title">{{ item.title }}</router-link>
+        <router-link :to="item.path" class="tags-li-title">{{
+          item.title
+        }}</router-link>
         <span class="tags-li-icon" @click="closeTags(index)">
           <el-icon :size="10">
             <CloseBold :style="isActive(item.path) ? 'color:#fff;' : ''" />
@@ -104,7 +106,7 @@ watch(
 </script>
 
 <style lang="less" scoped>
-@import "@/styles/common.less";
+@import '@/styles/common.less';
 .tags {
   position: relative;
   height: 40px;
@@ -165,6 +167,6 @@ watch(
   width: 100px;
   height: 23px;
   background: #fff;
-  z-index: 10;
+  // z-index: 10;
 }
 </style>

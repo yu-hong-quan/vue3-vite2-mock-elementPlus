@@ -1,1 +1,0 @@
-import{_ as r}from"./plugin-vue_export-helper.21dcd24c.js";import{l as e,m as t}from"./vue.3a04ecf9.js";const a={id:"tabs"};var s=r({},[["render",function(r,s){return e(),t("div",a,"tabs")}]]);export{s as default};

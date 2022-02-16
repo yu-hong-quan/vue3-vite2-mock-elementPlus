@@ -1,14 +1,3 @@
-const mockList = [
-  { id: 1, name: 'tom', age: 18 },
-  { id: 2, name: 'jerry', age: 18 },
-  { id: 3, name: 'mike', age: 18 },
-  { id: 4, name: 'jack', age: 18 },
-  { id: 5, name: 'larry', age: 18 },
-  { id: 6, name: 'white', age: 18 },
-  { id: 7, name: 'peter', age: 18 },
-  { id: 8, name: 'james', age: 18 },
-];
-
 const unprocessedOrdersList = [
   {
     title: '未处理订单30条',
@@ -57,6 +46,45 @@ const unprocessedOrdersList = [
   {
     title: '客户投诉问题10条',
     status: false,
+  },
+];
+
+const tabList = [
+  {
+    id: 1,
+    name: '张三',
+    money: 123,
+    address: '广东省东莞市长安镇',
+    state: '成功',
+    date: '2021-6-1',
+    thumb: 'https://lin-xin.gitee.io/images/post/wms.png',
+  },
+  {
+    id: 2,
+    name: '李四',
+    money: 456,
+    address: '广东省广州市白云区',
+    state: '成功',
+    date: '2021-6-2',
+    thumb: 'https://lin-xin.gitee.io/images/post/node3.png',
+  },
+  {
+    id: 3,
+    name: '王五',
+    money: 789,
+    address: '湖南省长沙市',
+    state: '失败',
+    date: '2021-6-3',
+    thumb: 'https://lin-xin.gitee.io/images/post/parcel.png',
+  },
+  {
+    id: 4,
+    name: '赵六',
+    money: 1011,
+    address: '福建省厦门市鼓浪屿',
+    state: '成功',
+    date: '2021-6-3',
+    thumb: 'https://lin-xin.gitee.io/images/post/notice.png',
   },
 ];
 
@@ -156,20 +184,22 @@ module.exports = [
     },
   },
   {
-    url: '/api/getList',
+    url: '/api/table/getList',
     type: 'get',
     response: (config) => {
       // 从查询参数中获取分页、过滤关键词等参数
       const { page = 1, limit = 5 } = config.query;
       // 分页
-      const data = mockList.filter(
+      const list = tabList.filter(
         (item, index) => index < limit * page && index >= limit * (page - 1)
       );
 
       return {
         code: 200,
-        data,
-        total: mockList.length,
+        data: {
+          list,
+          pageTotal: tabList.length,
+        },
       };
     },
   },
