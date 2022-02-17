@@ -16,7 +16,7 @@
         >
         <el-select
           v-model="query.address"
-          placeholder="地址"
+          placeholder="选择地址"
           class="handle-select mr10"
         >
           <el-option key="1" label="广东省" value="广东省"></el-option>
@@ -24,7 +24,7 @@
         </el-select>
         <el-input
           v-model="query.name"
-          placeholder="用户名"
+          placeholder="输入用户名"
           class="handle-input mr10"
         ></el-input>
         <el-button type="primary" @click="handleSearch"
@@ -117,7 +117,7 @@ import BasicContainer from 'coms/vpro-materials/basic-container'
 import { Delete, Search } from "@element-plus/icons-vue";
 import hooks from "@/hooks/index"; // 引入自定义hooks
 import { ref, onMounted, getCurrentInstance } from 'vue'
-const { proxy } = getCurrentInstance(); // 此方法在开发环境以及生产环境下都能放到组件上下文对象（推荐）
+const { proxy } = getCurrentInstance(); // 此方法在开发环境以及生产环境下都能拿到组件上下文对象（推荐）
 // 对自定义hooks进行解构获取内部实例方法
 let { showMessageBox } = hooks();
 
@@ -162,8 +162,10 @@ const handleSearch = () => {
 
 // 删除操作
 const handleDelete = (row) => {
-  // tableData.value = tableData.value.filter(i => i.id !== row.id)
-  showMessageBox("温馨提示", "warning", "是否确认删除已选中的数据", true, true);
+  showMessageBox("温馨提示", "warning", "是否确认删除已选中的数据", true, true, () => {
+    tableData.value = tableData.value.filter(i => i.id !== row.id)
+    return true;
+  });
 }
 
 // 多选操作
@@ -176,16 +178,17 @@ const handleSelectionChange = val => {
 const delAllSelection = () => {
   const length = multipleSelection.length
   if (length > 0) {
-    showMessageBox("温馨提示", "warning", "是否确认删除已选中的数据", true, true)
-
-    let str = ''
-    delList = delList.concat(multipleSelection)
-    for (let i = 0; i < length; i++) {
-      str += multipleSelection[i].name + ' '
-      tableData.value = tableData.value.filter(j => j.id !== multipleSelection[i].id)
-    }
-    // ElMessage.error(`删除了${str}`)
-    multipleSelection = []
+    showMessageBox("温馨提示", "warning", "是否确认删除已选中的数据", true, true, () => {
+      let str = ''
+      delList = delList.concat(multipleSelection)
+      for (let i = 0; i < length; i++) {
+        str += multipleSelection[i].name + ' '
+        tableData.value = tableData.value.filter(j => j.id !== multipleSelection[i].id)
+      }
+      ElMessage.error(`删除了${str}`)
+      multipleSelection = []
+      return true;
+    })
   } else {
     ElMessage.warning(`请选择需要删除的项`)
   }
@@ -221,7 +224,7 @@ const handlePageChange = val => {
     width: 120px;
   }
   .handle-input {
-    width: 300px;
+    width: 200px;
     display: inline-block;
   }
 }

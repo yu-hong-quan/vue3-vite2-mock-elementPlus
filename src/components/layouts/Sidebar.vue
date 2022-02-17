@@ -58,7 +58,7 @@ import { computed, onMounted, getCurrentInstance, reactive, ref, watch } from "v
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 // 获取当前组件的上下文
-const { proxy } = getCurrentInstance(); // 此方法在开发环境以及生产环境下都能放到组件上下文对象（推荐）
+const { proxy } = getCurrentInstance(); // 此方法在开发环境以及生产环境下都能拿到组件上下文对象（推荐）
 const $route = useRoute();
 const $store = useStore();
 let sidebarList = ref([]);

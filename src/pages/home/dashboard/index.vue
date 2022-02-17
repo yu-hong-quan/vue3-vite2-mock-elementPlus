@@ -78,7 +78,7 @@
         <div class="home_bottom">
           <div class="bottom_right">
             <div class="clearfix">
-              <span>信息中心</span>
+              <span>消息中心</span>
               <div>
                 <el-button
                   style="float: right; margin-right: 50px"
@@ -93,6 +93,8 @@
               :data="todoList"
               style="width: 100%"
               max-height="500px"
+              header-cell-class-name="table-header"
+              ref="multipleTable"
             >
               <el-table-column width="40">
                 <template #default="scope">
@@ -102,15 +104,12 @@
               <el-table-column>
                 <template #default="scope">
                   <div class="todo-item">
-                    <span
-                      :class="{
-                        'todo-item-del': scope.row.status,
-                      }"
-                      >{{ scope.row.title }}</span
-                    >
+                    <span :class="{ 'todo-item-del': scope.row.status }">{{
+                      scope.row.title
+                    }}</span>
                     <div class="icon-list">
-                      <edit-outlined />
-                      <delete-outlined @click="itemDelect" />
+                      <edit-outlined @click="updateFnc(scope)" />
+                      <delete-outlined @click="itemDelect(scope)" />
                     </div>
                   </div>
                 </template>
@@ -126,31 +125,61 @@
         </div>
       </el-col>
     </el-row>
+    <!-- dialog对话框 -->
+    <ComDialog :dialogData="dialogData" @updata="updata">
+      <el-form :model="dialogData">
+        <el-form-item label="标题：" label-width="140px">
+          <el-input
+            v-model="dialogData.name"
+            autocomplete="off"
+            placeholder="请输入标题"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+
+      <span class="dialog-footer">
+        <el-button @click="dialogData.visible = false">取消</el-button>
+        <el-button type="primary" @click="Confirm">确认</el-button>
+      </span>
+    </ComDialog>
   </div>
 </template>
 
 <script setup name="dashboard">
-import { onMounted, getCurrentInstance, reactive, computed } from "vue";
+import { onMounted, computed, getCurrentInstance, ref, reactive } from "vue";//通过reactive定义的响应式数据是不需要通过.value或取其里面的子数据的，并且请勿对reactive定义的响应式数据执行解构操作，否则会失去响应式
+import ComDialog from "coms/common/ComDialog/index.vue"
 import hooks from "@/hooks/index"; // 引入自定义hooks
 
 // 获取当前组件的上下文
-const { proxy } = getCurrentInstance(); // 此方法在开发环境以及生产环境下都能放到组件上下文对象（推荐）
+const { proxy } = getCurrentInstance(); // 此方法在开发环境以及生产环境下都能拿到组件上下文对象（推荐）
 // 对自定义hooks进行解构获取内部实例方法
 let { showMessageBox } = hooks();
 
 let userIncon = "user-outlined";
 let userName = localStorage.getItem("ms_username");
-const todoList = reactive([]);
+const todoList = ref([]);
 const role = computed(() => (userName === "admin" ? "超级管理员" : "普通用户"));
+let delList = []
+let dialogData = ref({
+  visible: false,
+  title: '修改信息',
+  name: ''
+})
+let scopes = null;
 
 
-const allDelect = () => {
-  showMessageBox("温馨提示", "error", "是否确认删除已选中的数据", true, true);
-};
 
-const itemDelect = () => {
-  showMessageBox("温馨提示", "error", "是否确认删除", true, true);
-};
+let updateFnc = (scope) => {
+  console.log(scope)
+  scopes = scope;
+  dialogData.value.name = scope.row.title
+  dialogData.value.visible = true
+}
+
+const updata = (data) => {
+  console.log('子组件传过来的值', data); //子组件传过来的值
+  dialogData.value.visible = data
+}
 
 // 获取站内信数据
 const getListData = () => {
@@ -158,12 +187,39 @@ const getListData = () => {
     .get(`/api/unprocessedOrders`)
     .then((res) => {
       console.log(res);
-      todoList.push(...res.list);
+      todoList.value.push(...res.list);
     })
     .catch((err) => {
       console.log(err);
     });
 };
+
+const allDelect = () => {
+  delList = todoList.value.filter(j => j.status === true)
+  if (delList.length > 0) {
+    showMessageBox("温馨提示", "warning", "是否确认删除已选中的数据", true, true, () => {
+      for (let i = 0; i < delList.length; i++) {
+        todoList.value = todoList.value.filter(j => j.id !== delList[i].id)
+      }
+      return true;
+    })
+  } else {
+    ElMessage.warning(`请选择需要删除的项`)
+  }
+};
+
+const itemDelect = (scope) => {
+  let { row, $index } = scope;
+  showMessageBox("温馨提示", "error", "是否确认删除", true, true, () => {
+    todoList.value = todoList.value.filter(j => j.id !== row.id)
+    return true;
+  });
+};
+
+const Confirm = () => {
+  todoList.value[scopes.$index].title = dialogData.value.name
+  dialogData.value.visible = false;
+}
 
 // 挂在完成时
 onMounted(() => {
@@ -243,9 +299,6 @@ onMounted(() => {
 
 .home_bottom {
   background: #fff;
-  // display: flex;
-  // justify-content: flex-start;
-  // align-items: center;
   border-radius: 3px;
   transition: all 0.5s;
   overflow: hidden;
@@ -372,5 +425,17 @@ onMounted(() => {
 .todo-item-del {
   text-decoration: line-through;
   color: #999;
+}
+
+.el-input {
+  width: 200px;
+}
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  right: 20px;
+}
+.dialog-footer button:first-child {
+  margin-right: 10px;
 }
 </style>

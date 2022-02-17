@@ -23,7 +23,14 @@ export default () => {
   }
 
   // 消息弹出框
-  function showMessageBox(title, type, message, isCancel, isConfirm) {
+  function showMessageBox(
+    title,
+    type,
+    message,
+    isCancel,
+    isConfirm,
+    affairFnc
+  ) {
     ElMessageBox.confirm(message, title, {
       confirmButtonText: '确认',
       cancelButtonText: '取消',
@@ -50,12 +57,15 @@ export default () => {
     })
       .then((res) => {
         console.log(res);
-        ElMessage({
-          type: 'success',
-          message: '删除成功',
-        });
+        if (affairFnc() === true) {
+          ElMessage({
+            type: 'success',
+            message: '删除成功',
+          });
+        }
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         ElMessage({
           type: 'info',
           message: '已取消',

@@ -16,8 +16,8 @@ onMounted(() => {
 </template>
 
 <style>
-@import "@/styles/common.less";
-@import "@/styles/main.less";
+@import '@/styles/common.less';
+@import '@/styles/main.less';
 #app,
 body,
 html {
