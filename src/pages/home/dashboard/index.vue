@@ -95,6 +95,7 @@
               max-height="500px"
               header-cell-class-name="table-header"
               ref="multipleTable"
+              v-loading="loadingBlan"
             >
               <el-table-column width="40">
                 <template #default="scope">
@@ -161,6 +162,7 @@ let dialogData = ref({
   name: ''
 })
 let scopes = null;
+let loadingBlan = ref(true)
 
 
 
@@ -182,7 +184,10 @@ const getListData = () => {
     .get(`/api/unprocessedOrders`)
     .then((res) => {
       console.log(res);
-      todoList.value.push(...res.list);
+      setTimeout(() => {
+        todoList.value.push(...res.list);
+        loadingBlan.value = false
+      }, 500)
     })
     .catch((err) => {
       console.log(err);

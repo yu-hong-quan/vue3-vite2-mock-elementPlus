@@ -38,6 +38,7 @@
         ref="multipleTable"
         header-cell-class-name="table-header"
         @selection-change="handleSelectionChange"
+        v-loading="loadingBlan"
       >
         <el-table-column
           type="selection"
@@ -203,6 +204,7 @@ let multipleSelection = []
 let delList = []
 let editVisible = ref(false)
 let pageTotal = ref(0)
+let loadingBlan = ref(true)
 let scopes = null
 
 let idx = -1
@@ -215,8 +217,12 @@ onMounted(() => {
 const getData = () => {
   proxy.$axios.get(`/api/table/getList`).then(res => {
     console.log('列表数据：', res)
-    tableData.value = res.list
-    pageTotal.value = res.pageTotal || 50
+    setTimeout(() => {
+      tableData.value = res.list
+      pageTotal.value = res.pageTotal || 50
+      loadingBlan.value = false
+    }, 500)
+
   }).catch(err => {
     console.log(err)
   })
