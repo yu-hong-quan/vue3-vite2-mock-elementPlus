@@ -9,6 +9,8 @@
 
     <div class="header-right">
       <div class="header-user-con">
+        <!-- 中英文切换 -->
+        <img :src="i18nImg" alt="" class="i18nImg" @click="selecti18n()" />
         <!-- 消息中心 -->
         <div class="btn-bell">
           <el-tooltip
@@ -62,12 +64,27 @@ const $store = useStore();
 const router = useRouter();
 let collapse = computed(() => $store.state.layout.collapse);
 let message = ref(2);
+let i18nBln = ref(true)
+let i18nImg = ref('')
 const username = computed(() => {
   let username = localStorage.getItem("ms_username");
   return username ? username : name;
 });
 
 
+
+// 切换中英文
+const selecti18n = () => {
+  if (i18nBln.value) {
+    i18nImg.value = '../../../src/assets/zh.png'
+    i18nBln.value = !i18nBln.value
+  } else {
+    i18nImg.value = '../../../src/assets/en.png'
+    i18nBln.value = !i18nBln.value
+  }
+}
+
+selecti18n()
 
 // 侧边栏折叠
 const collapseChage = () => {
@@ -114,6 +131,12 @@ const handleCommand = (command) => {
     display: flex;
     height: 50px;
     align-items: center;
+    .i18nImg {
+      width: 20px;
+      height: 20px;
+      margin-right: 20px;
+      cursor: pointer;
+    }
     .btn-bell,
     .btn-fullscreen {
       position: relative;

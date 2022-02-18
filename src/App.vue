@@ -1,4 +1,9 @@
+<template>
+  <router-view />
+</template>
+
 <script setup>
+
 import { onMounted } from "vue";
 onMounted(() => {
   ElNotification.info({
@@ -9,11 +14,8 @@ onMounted(() => {
     offset: 104,
   });
 });
-</script>
 
-<template>
-  <router-view></router-view>
-</template>
+</script>
 
 <style>
 @import '@/styles/common.less';
