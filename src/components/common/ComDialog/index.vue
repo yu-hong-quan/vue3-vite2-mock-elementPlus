@@ -4,9 +4,13 @@
     @close="dialogClose"
     :title="dialogTitle"
     width="30%"
-    top="300px"
+    top="267px"
   >
     <slot></slot>
+    <span class="dialog-footer">
+      <el-button @click="props.dialogData.visible = false">取消</el-button>
+      <el-button type="primary" @click="dialogConfirm">确认</el-button>
+    </span>
   </el-dialog>
 </template>
 
@@ -25,7 +29,7 @@ const props = defineProps({
 dialogTitle = props.dialogData.title
 
 //自定义函数，父组件可以触发该函数用户子组件通信父组件
-const em = defineEmits(['updata'])
+const em = defineEmits(['updata', 'confirm'])
 
 watch(
   () => props.dialogData.visible,
@@ -38,8 +42,23 @@ const dialogClose = () => {
   em("updata", false)
 }
 
+const dialogConfirm = () => {
+  em("confirm")
+}
+
 onMounted(() => {
 })
 </script>
 <style lang="less" scoped>
+</style>
+
+<style scoped>
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  right: 20px;
+}
+.dialog-footer button:first-child {
+  margin-right: 10px;
+}
 </style>

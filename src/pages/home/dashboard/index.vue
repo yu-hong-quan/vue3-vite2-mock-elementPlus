@@ -126,7 +126,7 @@
       </el-col>
     </el-row>
     <!-- dialog对话框 -->
-    <ComDialog :dialogData="dialogData" @updata="updata">
+    <ComDialog :dialogData="dialogData" @updata="updata" @confirm="Confirm">
       <el-form :model="dialogData">
         <el-form-item label="标题：" label-width="140px">
           <el-input
@@ -136,11 +136,6 @@
           ></el-input>
         </el-form-item>
       </el-form>
-
-      <span class="dialog-footer">
-        <el-button @click="dialogData.visible = false">取消</el-button>
-        <el-button type="primary" @click="Confirm">确认</el-button>
-      </span>
     </ComDialog>
   </div>
 </template>
@@ -197,7 +192,7 @@ const getListData = () => {
 const allDelect = () => {
   delList = todoList.value.filter(j => j.status === true)
   if (delList.length > 0) {
-    showMessageBox("温馨提示", "warning", "是否确认删除已选中的数据", true, true, () => {
+    showMessageBox("温馨提示", "warning", "是否确认删除已选中的数据", true, true, 0, () => {
       for (let i = 0; i < delList.length; i++) {
         todoList.value = todoList.value.filter(j => j.id !== delList[i].id)
       }
@@ -210,15 +205,18 @@ const allDelect = () => {
 
 const itemDelect = (scope) => {
   let { row, $index } = scope;
-  showMessageBox("温馨提示", "error", "是否确认删除", true, true, () => {
+  showMessageBox("温馨提示", "error", "是否确认删除", true, true, 0, () => {
     todoList.value = todoList.value.filter(j => j.id !== row.id)
     return true;
   });
 };
 
 const Confirm = () => {
-  todoList.value[scopes.$index].title = dialogData.value.name
-  dialogData.value.visible = false;
+  showMessageBox("温馨提示", "error", "是否确认修改", true, true, 1, () => {
+    todoList.value[scopes.$index].title = dialogData.value.name
+    dialogData.value.visible = false;
+    return true;
+  });
 }
 
 // 挂在完成时
@@ -429,13 +427,5 @@ onMounted(() => {
 
 .el-input {
   width: 200px;
-}
-.dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-  right: 20px;
-}
-.dialog-footer button:first-child {
-  margin-right: 10px;
 }
 </style>

@@ -29,6 +29,7 @@ export default () => {
     message,
     isCancel,
     isConfirm,
+    operationType,
     affairFnc
   ) {
     ElMessageBox.confirm(message, title, {
@@ -45,11 +46,12 @@ export default () => {
         //关闭之前
         if (action === 'confirm') {
           instance.confirmButtonLoading = true;
-          instance.confirmButtonText = '正在删除中...';
+          instance.confirmButtonText =
+            operationType === 0 ? '正在删除中...' : '正在修改中...';
           setTimeout(() => {
             done();
             instance.confirmButtonLoading = false;
-          }, 3000);
+          }, 1000);
         } else {
           done();
         }
@@ -60,7 +62,7 @@ export default () => {
         if (affairFnc() === true) {
           ElMessage({
             type: 'success',
-            message: '删除成功',
+            message: operationType === 0 ? '删除成功' : '修改成功',
           });
         }
       })
