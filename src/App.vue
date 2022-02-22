@@ -7,8 +7,8 @@
 import { onMounted } from "vue";
 onMounted(() => {
   ElNotification.info({
-    title: "卷起来吧，前端人",
-    message: "bug间，代码灰飞烟灭",
+    title: "欢迎光临《内卷吧》",
+    message: "卷起来吧，前端人",
     "show-close": false,
     duration: 10000,
     offset: 104,

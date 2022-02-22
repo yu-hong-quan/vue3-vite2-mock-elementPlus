@@ -5,10 +5,28 @@
       <el-icon v-if="!collapse"><Fold /></el-icon>
       <el-icon v-else><Expand /></el-icon>
     </div>
-    <div class="logo">Bug间，代码灰飞烟灭</div>
+    <!-- <div class="logo">{{ $t('PageTitle') }}</div> -->
 
     <div class="header-right">
       <div class="header-user-con">
+        <!-- 全屏 -->
+        <el-tooltip
+          class="item"
+          effect="dark"
+          :content="data.fullscreen ? '退出全屏' : '全屏'"
+          placement="bottom"
+        >
+          <img
+            class="suofangImg"
+            :src="
+              data.fullscreen
+                ? '../../../src/assets/quxiaoquanpin.png'
+                : '../../../src/assets/qunap.png'
+            "
+            alt=""
+            @click="handleFullScreen"
+          />
+        </el-tooltip>
         <!-- 中英文切换 -->
         <img :src="i18nImg" alt="" class="i18nImg" @click="selecti18n()" />
         <!-- 消息中心 -->
@@ -56,10 +74,16 @@
 </template>
 
 <script setup>
+
 import { Expand, Fold, Bell, ArrowDownBold } from "@element-plus/icons-vue";
-import { computed, ref } from "vue";
+import { onMounted, computed, ref, reactive, toRefs } from "vue";
+// import { useI18n } from 'vue-i18n';//要在js中使用国际化
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import hooks from "@/hooks/index"; // 引入自定义hooks
+// 对自定义hooks进行解构获取内部实例方法
+let { changeFullScreen, listenerEvent } = hooks();
+
 const $store = useStore();
 const router = useRouter();
 let collapse = computed(() => $store.state.layout.collapse);
@@ -71,20 +95,31 @@ const username = computed(() => {
   return username ? username : name;
 });
 
+const data = reactive({
+  fullscreen: false
+})
+listenerEvent(() => {
+  data.fullscreen = !data.fullscreen
+}, data)
+// 全屏切换
+const handleFullScreen = () => changeFullScreen(data)
+const params = toRefs(data)
+
 
 
 // 切换中英文
 const selecti18n = () => {
   if (i18nBln.value) {
     i18nImg.value = '../../../src/assets/zh.png'
-    i18nBln.value = !i18nBln.value
+    i18nBln.value = !i18nBln.value;
+
   } else {
     i18nImg.value = '../../../src/assets/en.png'
-    i18nBln.value = !i18nBln.value
+    i18nBln.value = !i18nBln.value;
+
   }
 }
 
-selecti18n()
 
 // 侧边栏折叠
 const collapseChage = () => {
@@ -98,6 +133,10 @@ const handleCommand = (command) => {
     router.push("/login");
   }
 };
+
+onMounted(() => {
+  selecti18n()
+})
 </script>
 
 <style lang="less" scoped>
@@ -131,6 +170,12 @@ const handleCommand = (command) => {
     display: flex;
     height: 50px;
     align-items: center;
+    .suofangImg {
+      width: 30px;
+      height: 30px;
+      margin-right: 20px;
+      cursor: pointer;
+    }
     .i18nImg {
       width: 20px;
       height: 20px;

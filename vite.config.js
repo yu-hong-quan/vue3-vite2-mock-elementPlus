@@ -19,7 +19,7 @@ import viteCompression from 'vite-plugin-compression';
 export default defineConfig({
   base: '/',
   build: {
-    outDir: 'static', // 打包后文件包名称
+    outDir: 'buildProject', // 打包后文件包名称
     chunkSizeWarningLimit: 500, //提高超大静态资源警告门槛
     minify: 'terser',
     cssCodeSplit: false, // 如果设置为false，整个项目中的所有 CSS 将被提取到一个 CSS 文件中
@@ -39,7 +39,7 @@ export default defineConfig({
         manualChunks: {
           // 拆分代码，这个就是分包，配置完后自动按需加载，现在还比不上webpack的splitchunk，不过也能用了。
           vue: ['vue', 'vue-router', 'vuex'],
-          // echarts: ['echarts'],
+          echarts: ['echarts'],
         },
       },
     },

@@ -16,6 +16,7 @@ import 'default-passive-events';
 const app = createApp(App);
 app.use(router);
 app.use(store);
+
 app.mount('#app');
 // Vue3注册全局属性
 app.config.globalProperties.$axios = axios;
