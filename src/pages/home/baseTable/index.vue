@@ -368,11 +368,13 @@ const Confirm = () => {
 .el-table .el-table__cell {
   position: initial !important;
 }
-.el-input__prefix,
-.el-input__suffix {
+.el-input__prefix {
   top: 9px;
 }
 .el-picker__popper {
   z-index: 9999 !important;
+}
+.el-dialog__body .el-input__suffix {
+  top: 9px;
 }
 </style>
