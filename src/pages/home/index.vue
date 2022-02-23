@@ -13,7 +13,6 @@ const collapse = computed(() => layout.collapse);
 </script>
 
 <template>
-  <!-- <HelloWorld :msg="msg" /> -->
   <div class="about">
     <v-header />
     <v-sidebar />

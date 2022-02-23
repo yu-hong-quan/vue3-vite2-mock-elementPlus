@@ -6,6 +6,7 @@ import store from './store'; // 引入公共数据仓库
 import axios from '@/utils/request'; // 引入封装请求文件
 import * as Incons from '@ant-design/icons-vue'; // 导入图标库
 import * as echarts from 'echarts'; // 引入图表库
+import i18n from '@/language';
 
 /**
  * 警告⚠：[Violation] Added non-passive event listener to a scroll-blocking 'mousewheel' event. Consider marking event handler as 'passive' to make the page more responsive.
@@ -16,6 +17,7 @@ import 'default-passive-events';
 const app = createApp(App);
 app.use(router);
 app.use(store);
+app.use(i18n);
 
 app.mount('#app');
 // Vue3注册全局属性

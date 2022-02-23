@@ -5,7 +5,7 @@
       <el-icon v-if="!collapse"><Fold /></el-icon>
       <el-icon v-else><Expand /></el-icon>
     </div>
-    <!-- <div class="logo">{{ $t('PageTitle') }}</div> -->
+    <div class="logo">{{ $t('PageTitle') }}</div>
 
     <div class="header-right">
       <div class="header-user-con">
@@ -76,13 +76,13 @@
 <script setup>
 
 import { Expand, Fold, Bell, ArrowDownBold } from "@element-plus/icons-vue";
-import { onMounted, computed, ref, reactive, toRefs } from "vue";
-// import { useI18n } from 'vue-i18n';//要在js中使用国际化
+import { onMounted, computed, ref, reactive, toRefs, getCurrentInstance } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import hooks from "@/hooks/index"; // 引入自定义hooks
 // 对自定义hooks进行解构获取内部实例方法
 let { changeFullScreen, listenerEvent } = hooks();
+const { proxy } = getCurrentInstance();
 
 const $store = useStore();
 const router = useRouter();
@@ -112,11 +112,11 @@ const selecti18n = () => {
   if (i18nBln.value) {
     i18nImg.value = '../../../src/assets/zh.png'
     i18nBln.value = !i18nBln.value;
-
+    proxy.$i18n.locale = 'zh'
   } else {
     i18nImg.value = '../../../src/assets/en.png'
     i18nBln.value = !i18nBln.value;
-
+    proxy.$i18n.locale = 'en'
   }
 }
 

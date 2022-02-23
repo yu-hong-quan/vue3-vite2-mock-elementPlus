@@ -1,4 +1,4 @@
 export default {
-  PageTitle: '123',
+  PageTitle: 'Between bugs, code smokes',
   Home: 'Home',
 };

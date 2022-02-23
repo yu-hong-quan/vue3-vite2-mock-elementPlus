@@ -1,16 +1,13 @@
-import { createI18n } from 'vue-i18n';
+import { createI18n } from 'vue-i18n'; //引入vue-i18n组件
+import messages from './message';
 
-import zh from './zh-CN';
-import en from './en-US';
-
+const language = (navigator.language || 'zh').toLowerCase();
 const i18n = createI18n({
-  // legacy: false, // Composition API 模式
-  globalInjection: true, // 全局注册 $t方法
-  locale: localStorage.getItem('language') || 'zh',
-  messages: {
-    zh,
-    en,
-  },
+  fallbackLocale: 'ch',
+  globalInjection: true,
+  legacy: false, // you must specify 'legacy: false' option
+  locale: language.split('-')[0] || 'zh',
+  messages,
 });
 
 export default i18n;
