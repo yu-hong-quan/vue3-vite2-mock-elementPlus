@@ -113,11 +113,32 @@ export default () => {
     document.addEventListener('msfullscreenchange', fn);
   }
 
+  // 消息提示
+  function showMessageText(
+    message = '',
+    type = 'warning',
+    icon,
+    dangerouslyUseHTMLString = false,
+    duration = 2000,
+    showClose = false
+  ) {
+    ElMessage({
+      showClose: true,
+      message,
+      type,
+      icon,
+      dangerouslyUseHTMLString,
+      duration,
+      'show-close': showClose,
+    });
+  }
+
   return {
     showGlobalLoading,
     hideGlobalLoading,
     showMessageBox,
     changeFullScreen,
     listenerEvent,
+    showMessageText,
   };
 };

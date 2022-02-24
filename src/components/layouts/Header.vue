@@ -28,7 +28,12 @@
           />
         </el-tooltip>
         <!-- 中英文切换 -->
-        <img :src="i18nImg" alt="" class="i18nImg" @click="selecti18n()" />
+        <img
+          :src="i18nImg"
+          alt=""
+          class="i18nImg"
+          @click="selecti18n('click')"
+        />
         <!-- 消息中心 -->
         <div class="btn-bell">
           <el-tooltip
@@ -81,7 +86,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import hooks from "@/hooks/index"; // 引入自定义hooks
 // 对自定义hooks进行解构获取内部实例方法
-let { changeFullScreen, listenerEvent } = hooks();
+let { changeFullScreen, listenerEvent, showMessageText } = hooks();
 const { proxy } = getCurrentInstance();
 
 const $store = useStore();
@@ -108,15 +113,21 @@ const params = toRefs(data)
 
 
 // 切换中英文
-const selecti18n = () => {
+const selecti18n = (type) => {
   if (i18nBln.value) {
     i18nImg.value = '../../../src/assets/zh.png'
     i18nBln.value = !i18nBln.value;
     proxy.$i18n.locale = 'zh'
+    if (type) {
+      showMessageText('已成功切换为中文', 'success')
+    }
   } else {
     i18nImg.value = '../../../src/assets/en.png'
     i18nBln.value = !i18nBln.value;
     proxy.$i18n.locale = 'en'
+    if (type) {
+      showMessageText('已成功切换为英文', 'success')
+    }
   }
 }
 
