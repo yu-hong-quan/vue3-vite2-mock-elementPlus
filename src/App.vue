@@ -1,10 +1,17 @@
 <template>
-  <router-view />
+  <router-view v-if="isRouterAlive" v-slot="{ Component }">
+    <keep-alive>
+      <component :is="Component" />
+    </keep-alive>
+  </router-view>
 </template>
 
 <script setup>
 
-import { onMounted } from "vue";
+import { onMounted, ref, provide, nextTick } from "vue";
+
+let isRouterAlive = ref(true) // 控制 router-view 是否显示达到刷新效果且不会出现闪白情况
+
 onMounted(() => {
   ElNotification.info({
     title: "欢迎光临《内卷吧》",
@@ -14,6 +21,13 @@ onMounted(() => {
     offset: 104,
   });
 });
+
+provide('reload', () => {
+  isRouterAlive.value = false
+  nextTick(() => {
+    isRouterAlive.value = true
+  })
+})
 
 </script>
 

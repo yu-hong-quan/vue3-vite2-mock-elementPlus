@@ -18,17 +18,21 @@
       </li>
     </ul>
     <div class="tags-close-box">
-      <el-dropdown @command="handleTags">
+      <el-dropdown @command="handleTags" trigger="hover">
         <el-button size="default" type="primary">
-          标签操作
+          {{ $t('LabelOperation') }}
           <el-icon :size="10">
             <ArrowDownBold style="position: absolute; right: -5px" />
           </el-icon>
         </el-button>
         <template #dropdown>
           <el-dropdown-menu size="small">
-            <el-dropdown-item command="other">关闭其他</el-dropdown-item>
-            <el-dropdown-item command="all">关闭所有</el-dropdown-item>
+            <el-dropdown-item command="other">{{
+              $t('CloseOther')
+            }}</el-dropdown-item>
+            <el-dropdown-item command="all">{{
+              $t('CloseAll')
+            }}</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -41,11 +45,13 @@ import { ArrowDownBold, CloseBold } from "@element-plus/icons-vue";
 import { computed, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
+
 const $router = useRouter();
 const $route = useRoute();
 const $store = useStore();
 let tagsList = computed(() => $store.state.layout.tagsList);
 let showTags = computed(() => tagsList.value.length > 0);
+
 
 const isActive = (path) => {
   return path === $route.fullPath;
@@ -164,7 +170,7 @@ watch(
   box-sizing: border-box;
   padding-top: 3.5px;
   text-align: center;
-  width: 100px;
+  width: auto;
   height: 23px;
   background: #fff;
   // z-index: 10;

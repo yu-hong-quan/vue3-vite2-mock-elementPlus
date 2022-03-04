@@ -6,7 +6,7 @@ import store from './store'; // 引入公共数据仓库
 import axios from '@/utils/request'; // 引入封装请求文件
 import * as Incons from '@ant-design/icons-vue'; // 导入图标库
 import * as echarts from 'echarts'; // 引入图表库
-import i18n from '@/language';
+import i18n from '@/language';// 引入配置好的国际化语言插件
 
 /**
  * 警告⚠：[Violation] Added non-passive event listener to a scroll-blocking 'mousewheel' event. Consider marking event handler as 'passive' to make the page more responsive.

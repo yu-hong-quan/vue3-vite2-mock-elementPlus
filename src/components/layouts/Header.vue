@@ -65,11 +65,13 @@
                 href="https://github.com/15017872695/vue3-vite2-mock-elementPlus"
                 target="_blank"
               >
-                <el-dropdown-item>项目仓库</el-dropdown-item>
+                <el-dropdown-item>{{
+                  $t('ProjectWarehouse')
+                }}</el-dropdown-item>
               </a>
-              <el-dropdown-item divided command="loginout"
-                >退出登录</el-dropdown-item
-              >
+              <el-dropdown-item divided command="loginout">{{
+                $t('LogOut')
+              }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -79,15 +81,14 @@
 </template>
 
 <script setup>
-
 import { Expand, Fold, Bell, ArrowDownBold } from "@element-plus/icons-vue";
-import { onMounted, computed, ref, reactive, toRefs, getCurrentInstance } from "vue";
+import { onMounted, computed, ref, reactive, toRefs, getCurrentInstance, inject } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import hooks from "@/hooks/index"; // 引入自定义hooks
 // 对自定义hooks进行解构获取内部实例方法
-let { changeFullScreen, listenerEvent, showMessageText } = hooks();
-const { proxy } = getCurrentInstance();
+let { changeFullScreen, listenerEvent, showMessageText, showMessageBox } = hooks();
+const { proxy: self } = getCurrentInstance();
 
 const $store = useStore();
 const router = useRouter();
@@ -106,29 +107,35 @@ const data = reactive({
 listenerEvent(() => {
   data.fullscreen = !data.fullscreen
 }, data)
+
 // 全屏切换
 const handleFullScreen = () => changeFullScreen(data)
 const params = toRefs(data)
 
-
+// 重新刷新页面
+const reload = inject('reload');
 
 // 切换中英文
-const selecti18n = (type) => {
-  if (i18nBln.value) {
-    i18nImg.value = '../../../src/assets/zh.png'
-    i18nBln.value = !i18nBln.value;
-    proxy.$i18n.locale = 'zh'
-    if (type) {
+const selecti18n = () => {
+  showMessageBox("温馨提示", "warning", "是否确认切换语言?", true, true, 1, () => {
+    if (i18nBln.value) {
+      i18nImg.value = '../../../src/assets/zh.png'
+      i18nBln.value = !i18nBln.value;
+      self.$i18n.locale = 'zh'
+      window.localStorage.setItem('languageType', 'zh')
       showMessageText('已成功切换为中文', 'success')
-    }
-  } else {
-    i18nImg.value = '../../../src/assets/en.png'
-    i18nBln.value = !i18nBln.value;
-    proxy.$i18n.locale = 'en'
-    if (type) {
+      reload()
+    } else {
+      i18nImg.value = '../../../src/assets/en.png'
+      i18nBln.value = !i18nBln.value;
+      self.$i18n.locale = 'en'
+      window.localStorage.setItem('languageType', 'en')
       showMessageText('已成功切换为英文', 'success')
+      reload()
     }
-  }
+    return false;
+  })
+
 }
 
 
@@ -146,7 +153,16 @@ const handleCommand = (command) => {
 };
 
 onMounted(() => {
-  selecti18n()
+  console.log(self.$i18n.locale)
+  if (self.$i18n.locale == 'zh') {
+    window.localStorage.setItem('languageType', self.$i18n.locale)
+    i18nImg.value = '../../../src/assets/zh.png'
+    i18nBln.value = false;
+  } else {
+    window.localStorage.setItem('languageType', self.$i18n.locale)
+    i18nImg.value = '../../../src/assets/en.png'
+    i18nBln.value = true;
+  }
 })
 </script>
 

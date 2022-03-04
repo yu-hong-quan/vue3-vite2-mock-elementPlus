@@ -3,7 +3,7 @@ import messages from './message';
 
 const language = (navigator.language || 'zh').toLowerCase();
 const i18n = createI18n({
-  fallbackLocale: 'ch',
+  fallbackLocale: 'en',
   globalInjection: true,
   legacy: false, // you must specify 'legacy: false' option
   locale: language.split('-')[0] || 'zh',
