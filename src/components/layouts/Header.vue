@@ -75,13 +75,22 @@
             </el-dropdown-menu>
           </template>
         </el-dropdown>
+        <!-- 系统设置 -->
+        <el-icon class="navbar-icon"><Setting @click="showSetting" /></el-icon>
       </div>
     </div>
+
+    <!-- 系统设置右侧抽屉组件 -->
+    <HeaderDrawer
+      :isSetting="data.isShowSetting"
+      @isParentDrawer="isChildrenDrawer"
+    ></HeaderDrawer>
   </div>
 </template>
 
 <script setup>
-import { Expand, Fold, Bell, ArrowDownBold } from "@element-plus/icons-vue";
+import { Expand, Fold, Bell, ArrowDownBold, Setting } from "@element-plus/icons-vue";
+import HeaderDrawer from 'coms/layouts/HeaderDrawer.vue'
 import { onMounted, computed, ref, reactive, toRefs, getCurrentInstance, inject } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -102,7 +111,9 @@ const username = computed(() => {
 });
 
 const data = reactive({
-  fullscreen: false
+  fullscreen: false,
+  setting: null,
+  isShowSetting: false
 })
 listenerEvent(() => {
   data.fullscreen = !data.fullscreen
@@ -151,6 +162,17 @@ const handleCommand = (command) => {
     router.push("/login");
   }
 };
+
+// 显示设置页面
+const showSetting = () => {
+  data.isShowSetting = true
+}
+
+// 接受子组件传来的值，控制系统设置抽屉滑入滑出
+const isChildrenDrawer = (val) => {
+  console.log(val)
+  data.isShowSetting = val
+}
 
 onMounted(() => {
   console.log(self.$i18n.locale)
@@ -257,6 +279,10 @@ onMounted(() => {
     }
     .el-dropdown-menu__item {
       text-align: center;
+    }
+    .navbar-icon {
+      margin-left: 20px;
+      cursor: pointer;
     }
   }
 }
