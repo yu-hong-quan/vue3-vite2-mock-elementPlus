@@ -1,23 +1,107 @@
 <template>
-  <div>
+  <div class="draw-content">
     <el-drawer v-model="isShow" :direction="direction" @close="hadeClose">
       <template #title>
-        <h4>系统设置</h4>
+        <span style="font-size: 17px">系统设置</span>
       </template>
       <template #default>
-        <div></div>
-      </template>
-      <template #footer>
-        <div style="flex: auto"></div>
+        <el-divider> 主题 </el-divider>
+        <div class="boxContaner day-mode">
+          <el-switch
+            v-model="data.nightMode"
+            active-text="夜间模式"
+            inactive-text="日间模式"
+            @change="changeSetting('nightMode', data.nightMode)"
+          >
+          </el-switch>
+        </div>
+        <el-divider> 系统主题 </el-divider>
+        <div class="boxContaner">
+          <div class="checkbox-row">
+            <div
+              class="checkbox-item"
+              v-for="(item, index) in data.systemThemeList"
+              :key="index"
+              :class="{ active: item === data.systemThemeColor }"
+              :style="{ backgroundColor: item }"
+              @click="changeSetting('systemThemeColor', item)"
+            ></div>
+            <el-color-picker
+              v-model="data.systemThemeColor"
+              @active-change="changeSetting('systemThemeColor', $event)"
+              style="height: auto"
+            ></el-color-picker>
+          </div>
+        </div>
+        <el-divider> 顶栏主题 </el-divider>
+        <div class="boxContaner">
+          <div class="checkbox-row">
+            <div
+              class="checkbox-item"
+              v-for="(item, index) in data.navbarThemeList"
+              :key="index"
+              :class="{ active: item === data.navbarThemeColor }"
+              :style="{ backgroundColor: item }"
+              @click="changeSetting('navbarThemeColor', item)"
+            ></div>
+            <el-color-picker
+              v-model="data.navbarThemeColor"
+              @active-change="changeSetting('navbarThemeColor', $event)"
+              style="height: auto"
+            ></el-color-picker>
+          </div>
+        </div>
+        <el-divider> 菜单主题 </el-divider>
+        <div class="boxContaner">
+          <div class="checkbox-row">
+            <div
+              class="checkbox-item"
+              v-for="(item, index) in data.sidebarThemeList"
+              :key="index"
+              :class="{ active: item === data.sidebarThemeColor }"
+              :style="{ backgroundColor: item }"
+              @click="changeSetting('sidebarThemeColor', item)"
+            ></div>
+            <el-color-picker
+              v-model="data.sidebarThemeColor"
+              @active-change="changeSetting('sidebarThemeColor', $event)"
+            ></el-color-picker>
+          </div>
+        </div>
+        <el-divider> 界面显示 </el-divider>
+        <!-- <div class="other-row">
+          <span class="jiemian">面包屑</span>
+          <el-switch
+            v-model="data.showBreadcrumb"
+            class="custom-switch"
+            inline-prompt
+            active-text="开"
+            inactive-text="关"
+            @change="changeSetting('showBreadcrumb', $event)"
+          ></el-switch>
+        </div> -->
+        <div class="other-row">
+          <span class="jiemian">导航页</span>
+          <el-switch
+            v-model="isTagsShow"
+            class="custom-switch"
+            inline-prompt
+            active-text="开"
+            inactive-text="关"
+            @change="changeTags($event)"
+          ></el-switch>
+        </div>
+        <el-button class="draw-save" @click="isSetting = false">保存</el-button>
       </template>
     </el-drawer>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, getCurrentInstance, reactive, ref, watch, defineProps, defineEmits } from "vue";
+import { computed, onMounted, getCurrentInstance, toRefs, reactive, ref, watch, defineProps, defineEmits } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { _data, _changeSetting, _getThemes } from '@/utils/setting.js'
 // 获取当前组件的上下文
 const { proxy } = getCurrentInstance(); // 此方法在开发环境以及生产环境下都能拿到组件上下文对象（推荐）
 const $route = useRoute();
@@ -38,11 +122,15 @@ let isShow = ref(false)
 isShow.value = props.isSetting
 
 const direction = ref('rtl')
+const switchBln = ref(false)
+const data = reactive(_data)
 
 const hadeClose = (e) => {
   isShow.value = false;
   em('isParentDrawer', isShow.value)
 }
+
+let isTagsShow = computed(() => $store.state.layout.isTagsShow);
 
 watch(
   () => props.isSetting,
@@ -50,10 +138,125 @@ watch(
     isShow.value = newValue
   }
 );
+
+onMounted(() => {
+  _getThemes({ data })
+})
+
+const changeSetting = (type, value) => {
+  _changeSetting({ type, value, $store, data })
+}
+
+const changeTags = (value) => {
+  console.log(value)
+  $store.commit("layout/isTageBartShow", value);
+}
+
 </script>
 
 <style lang="less" scoped>
-/deep/ .el-drawer {
+@import '@/styles/themes.less';
+@nav-bg-dark: #273352;
+::v-deep(.el-drawer) {
   width: 21% !important;
+}
+::v-deep(.el-drawer__header) {
+  padding-bottom: 20px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 0px;
+}
+.boxContaner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  .checkbox-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    ::v-deep(.el-color-picker) {
+      margin-right: 10px;
+    }
+    flex-wrap: wrap;
+    .checkbox-item {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #ddd;
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      margin-right: 10px;
+      margin-bottom: 5px;
+
+      &.active {
+        border-color: @systemTheme;
+        &::before {
+          content: '\2713';
+          font-size: 14px;
+          color: #fff;
+          position: absolute;
+          top: 3px;
+          left: 5px;
+        }
+      }
+    }
+  }
+}
+
+.other-row {
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  color: #273352;
+  margin-bottom: 15px;
+  > span {
+    display: flex;
+    align-items: center;
+  }
+}
+.draw-save {
+  height: 32px;
+  width: 50%;
+  margin-left: 25%;
+  margin-top: 100px !important;
+  background-color: @systemTheme;
+  color: #fff;
+}
+
+.el-overlay {
+  z-index: 100;
+}
+
+::v-deep(.el-color-picker__trigger) {
+  width: 30px !important;
+  height: 30px !important;
+  margin-bottom: 0 !important;
+}
+
+::v-deep(.el-color-picker__color) {
+  border: none !important;
+}
+.other-row {
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  color: #273352;
+  margin-bottom: 15px;
+}
+.night-mode {
+  .other-row {
+    color: #c9d1d9;
+  }
+}
+::v-deep(.el-drawer) {
+  background: @drawerBackgroundColor;
+}
+::v-deep(.el-drawer__header) {
+  border-bottom: 1px solid @drawerBackgroundColor;
 }
 </style>

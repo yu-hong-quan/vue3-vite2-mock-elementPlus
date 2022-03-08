@@ -1,8 +1,6 @@
 <script setup name="home">
 import { computed } from "vue";
 import { useStore } from "vuex";
-// import HelloWorld from "coms/common/HelloWorld.vue";
-// const msg = "前端人，前端魂";
 import vHeader from "coms/layouts/Header.vue";
 import vSidebar from "coms/layouts/Sidebar.vue";
 import vTags from "coms/layouts/Tags.vue";
@@ -33,8 +31,13 @@ const collapse = computed(() => layout.collapse);
 </template>
 
 <style lang="less" scoped>
+@import '@/styles/common.less';
 .about {
   width: 100%;
   height: 100%;
+}
+.content-box,
+.about {
+  background: @drawerBackgroundColor;
 }
 </style>

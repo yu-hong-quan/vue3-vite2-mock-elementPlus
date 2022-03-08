@@ -4,7 +4,6 @@
       :default-active="onRoutes"
       :collapse="collapse"
       class="sidebar-el-menu"
-      background-color="#324157"
       text-color="#bfcbd9"
       active-text-color="#20a0ff"
       unique-opened
@@ -88,6 +87,7 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
+@import '@/styles/themes.less';
 .sidebar {
   display: block;
   position: absolute;
@@ -103,6 +103,6 @@ onMounted(() => {
   display: none;
 }
 .sidebar-el-menu:not(.el-menu--collapse) {
-  width: 250px;
+  width: 251px;
 }
 </style>

@@ -31,9 +31,10 @@ provide('reload', () => {
 
 </script>
 
-<style>
+<style lang="less">
 @import '@/styles/common.less';
 @import '@/styles/main.less';
+@import '@/styles/custom.less';
 #app,
 body,
 html {

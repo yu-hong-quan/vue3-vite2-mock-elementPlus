@@ -3,21 +3,22 @@ export default {
   state: {
     tagsList: [],
     collapse: false,
+    isTagsShow: true
   },
   mutations: {
-    delTagsItem(state, data) {
+    delTagsItem (state, data) {
       state.tagsList.splice(data.index, 1);
     },
-    setTagsItem(state, data) {
+    setTagsItem (state, data) {
       state.tagsList.push(data);
     },
-    clearTags(state) {
+    clearTags (state) {
       state.tagsList = [];
     },
-    closeTagsOther(state, data) {
+    closeTagsOther (state, data) {
       state.tagsList = data;
     },
-    closeCurrentTag(state, data) {
+    closeCurrentTag (state, data) {
       for (let i = 0, len = state.tagsList.length; i < len; i++) {
         const item = state.tagsList[i];
         if (item.path === data.$route.fullPath) {
@@ -34,9 +35,13 @@ export default {
       }
     },
     // 侧边栏折叠
-    hadndleCollapse(state, data) {
+    hadndleCollapse (state, data) {
       state.collapse = data;
     },
+    // 显示隐藏导航栏
+    isTageBartShow (state, data) {
+      state.isTagsShow = data
+    }
   },
   actions: {},
   getters: {},

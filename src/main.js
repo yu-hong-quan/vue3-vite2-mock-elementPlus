@@ -8,6 +8,7 @@ import * as Incons from '@ant-design/icons-vue'; // 导入图标库
 import * as echarts from 'echarts'; // 引入图表库
 import i18n from '@/language';// 引入配置好的国际化语言插件
 
+
 /**
  * 警告⚠：[Violation] Added non-passive event listener to a scroll-blocking 'mousewheel' event. Consider marking event handler as 'passive' to make the page more responsive.
  * 原因：没有添加被动事件监听器来阻止'touchstart'事件，请考虑添加事件管理者'passive'，以使页面更加流畅。 Chrome51 版本以后，Chrome 增加了新的事件捕获机制－Passive Event Listeners；

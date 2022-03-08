@@ -89,15 +89,14 @@
           <template #default="scope">
             <el-button
               type="text"
-              icon="el-icon-edit"
               @click="handleEdit(scope.$index, scope)"
+              style="width: 50px; height: 30px"
               >编辑</el-button
             >
             <el-button
               type="text"
-              icon="el-icon-delete"
-              class="red"
               @click="handleDelete(scope.row)"
+              style="width: 50px; height: 30px"
               >删除</el-button
             >
           </template>

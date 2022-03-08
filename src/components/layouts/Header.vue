@@ -189,6 +189,7 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
+@import '@/styles/themes.less';
 .header {
   width: 100%;
   height: 50px;
@@ -197,6 +198,7 @@ onMounted(() => {
   font-size: 22px;
   color: #fff;
   overflow: hidden;
+  background: @navbarTheme;
   .collapse-btn {
     width: 50px;
     height: 50px;

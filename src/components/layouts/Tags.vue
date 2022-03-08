@@ -1,5 +1,5 @@
 <template>
-  <div class="tags">
+  <div class="tags" v-if="isTagsShow">
     <ul>
       <li
         class="tags-li"
@@ -51,8 +51,8 @@ const $route = useRoute();
 const $store = useStore();
 let tagsList = computed(() => $store.state.layout.tagsList);
 let showTags = computed(() => tagsList.value.length > 0);
-
-
+let isTagsShow = computed(() => $store.state.layout.isTagsShow);
+console.log('tags状态：' + isTagsShow.value)
 const isActive = (path) => {
   return path === $route.fullPath;
 };
@@ -117,9 +117,9 @@ watch(
   position: relative;
   height: 40px;
   overflow: hidden;
-  background: #fff;
+  background: @drawerBackgroundColor;
   padding-right: 120px;
-  box-shadow: 0px 12px 8px -12px #ccc;
+  box-shadow: 0px 12px 8px -12px @drawerBackgroundColor;
   ul {
     box-sizing: border-box;
     width: 100%;
@@ -172,7 +172,6 @@ watch(
   text-align: center;
   width: auto;
   height: 23px;
-  background: #fff;
   // z-index: 10;
 }
 </style>

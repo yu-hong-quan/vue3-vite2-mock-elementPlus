@@ -1,3 +1,4 @@
+@import './themes.less';
 
 [class*=' el-icon-lx'],
 [class^='el-icon-lx'] {
@@ -6,9 +7,6 @@
 [class*='el-button'] {
 	margin-top: 0 !important;
 	margin-bottom: 0 !important;
-}
-.header {
-	background-color: #242f42;
 }
 .login-wrap {
 	background: #324157;
@@ -26,12 +24,11 @@
 	background: #20a0ff;
 }
 .tags-li.active {
-	border: 1px solid #409eff !important;
-	background-color: #409eff !important;
-  
+	border: 1px solid var(--systemThemeColor) !important;
+	background-color: var(--systemThemeColor) !important;
 }
-.tags-li.active .tags-li-title{
-  color: #fff !important;
+.tags-li.active .tags-li-title {
+	color: #fff !important;
 }
 .message-title {
 	color: #20a0ff;
@@ -40,24 +37,42 @@
 	background: rgb(40, 52, 70);
 }
 .avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
+	border: 1px dashed #d9d9d9;
+	border-radius: 6px;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
 }
 .avatar-uploader .el-upload:hover {
-  border-color: #409eff;
+	border-color: #409eff;
 }
 .el-icon.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  text-align: center;
+	font-size: 28px;
+	color: #8c939d;
+	width: 178px;
+	height: 178px;
+	text-align: center;
 }
 .avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
+	width: 178px;
+	height: 178px;
+	display: block;
+}
+
+.tags-close-box {
+	.el-button--default {
+		--el-button-font-color: #ffffff;
+		--el-button-bg-color: var(--systemThemeColor) !important;
+		--el-button-border-color: var(--systemThemeColor) !important;
+		--el-button-hover-color: var(--systemThemeColor);
+		--el-button-active-font-color: #e6e6e6;
+		--el-button-active-background-color: var(--systemThemeColor);
+		--el-button-active-border-color: var(--systemThemeColor);
+		&:hover,
+		&:focus {
+			background-color: var(--systemThemeColor);
+			color: #ffffff;
+			border-color: var(--systemThemeColor);
+		}
+	}
 }
