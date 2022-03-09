@@ -2,20 +2,20 @@
   <div class="draw-content">
     <el-drawer v-model="isShow" :direction="direction" @close="hadeClose">
       <template #title>
-        <span style="font-size: 17px">系统设置</span>
+        <span style="font-size: 17px">{{ $t('SystemSettings') }}</span>
       </template>
       <template #default>
-        <el-divider> 主题 </el-divider>
+        <el-divider> {{ $t('Theme') }} </el-divider>
         <div class="boxContaner day-mode">
           <el-switch
             v-model="data.nightMode"
-            active-text="夜间模式"
-            inactive-text="日间模式"
+            :active-text="$t('NightMode')"
+            :inactive-text="$t('DaytimeMode')"
             @change="changeSetting('nightMode', data.nightMode)"
           >
           </el-switch>
         </div>
-        <el-divider> 系统主题 </el-divider>
+        <el-divider> {{ $t('SystemTheme') }} </el-divider>
         <div class="boxContaner">
           <div class="checkbox-row">
             <div
@@ -33,7 +33,7 @@
             ></el-color-picker>
           </div>
         </div>
-        <el-divider> 顶栏主题 </el-divider>
+        <el-divider> {{ $t('TopBarTheme') }} </el-divider>
         <div class="boxContaner">
           <div class="checkbox-row">
             <div
@@ -51,7 +51,7 @@
             ></el-color-picker>
           </div>
         </div>
-        <el-divider> 菜单主题 </el-divider>
+        <el-divider> {{ $t('MenuTheme') }} </el-divider>
         <div class="boxContaner">
           <div class="checkbox-row">
             <div
@@ -68,7 +68,7 @@
             ></el-color-picker>
           </div>
         </div>
-        <el-divider> 界面显示 </el-divider>
+        <el-divider> {{ $t('InterfaceDisplay') }} </el-divider>
         <!-- <div class="other-row">
           <span class="jiemian">面包屑</span>
           <el-switch
@@ -81,17 +81,17 @@
           ></el-switch>
         </div> -->
         <div class="other-row">
-          <span class="jiemian">导航页</span>
+          <span class="jiemian">{{ $t('NavigationPage') }}</span>
           <el-switch
             v-model="isTagsShow"
-            class="custom-switch"
-            inline-prompt
-            active-text="开"
-            inactive-text="关"
+            :active-text="$t('Open')"
+            :inactive-text="$t('Guan')"
             @change="changeTags($event)"
           ></el-switch>
         </div>
-        <el-button class="draw-save" @click="isSetting = false">保存</el-button>
+        <el-button class="draw-save" @click="isSetting = false">{{
+          $t('Save')
+        }}</el-button>
       </template>
     </el-drawer>
   </div>
