@@ -76,7 +76,9 @@
           </template>
         </el-dropdown>
         <!-- 系统设置 -->
-        <el-icon class="navbar-icon"><Setting @click="showSetting" /></el-icon>
+        <el-icon class="navbar-icon">
+          <Setting @click="showSetting" />
+        </el-icon>
       </div>
     </div>
 

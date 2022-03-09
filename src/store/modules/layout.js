@@ -40,6 +40,7 @@ export default {
     },
     // 显示隐藏导航栏
     isTageBartShow (state, data) {
+      console.log('Store:' + data)
       state.isTagsShow = data
     }
   },

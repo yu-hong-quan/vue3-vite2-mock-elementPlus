@@ -131,7 +131,7 @@ const hadeClose = (e) => {
 }
 
 let isTagsShow = computed(() => $store.state.layout.isTagsShow);
-
+console.log('HeaderDrawer：' + $store.state.layout.isTagsShow)
 watch(
   () => props.isSetting,
   (newValue, oldValue) => {

@@ -119,7 +119,7 @@ watch(
   overflow: hidden;
   background: @drawerBackgroundColor;
   padding-right: 120px;
-  box-shadow: 0px 12px 8px -12px @drawerBackgroundColor;
+  box-shadow: 0px 12px 8px -12px @navbarTheme;
   ul {
     box-sizing: border-box;
     width: 100%;
