@@ -10,10 +10,11 @@
 </script>
 
 <style lang="less" scoped>
-  .basic-container {
-    padding: 20px;
-    margin-bottom: 20px;
-    background-color: #fff;
-    border-radius: 6px;
-  }
+@import '@/styles/themes.less';
+.basic-container {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: @contentBgColor;
+  border-radius: 6px;
+}
 </style>

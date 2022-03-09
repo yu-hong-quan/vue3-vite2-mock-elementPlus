@@ -254,9 +254,9 @@ const changeTags = (value) => {
   }
 }
 ::v-deep(.el-drawer) {
-  background: @drawerBackgroundColor;
+  background: @contentBgColor;
 }
 ::v-deep(.el-drawer__header) {
-  border-bottom: 1px solid @drawerBackgroundColor;
+  border-bottom: 1px solid @contentBgColor;
 }
 </style>

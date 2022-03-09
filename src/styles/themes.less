@@ -1,3 +1,4 @@
+// 日间模式时(默认)
 :root {
 	--systemThemeColor: #0960bd;
 	--navbarThemeColor: #304156;
@@ -5,21 +6,25 @@
 	--sidebarThemeColor: #304156;
 	--sidebarThemeColorActive: #0960bd;
 	--systemThemeColorActive: #93ffff;
-	--contentBgColor: #f0f2f5;
+	--contentBgColor: #fff;
 	--border-color: #f0f0f0;
-	--drawerBackgroundColor: #fff;
+	--drawerBackgroundColor: #f0f2f5;
 	--el-border-color-base: #dcdfe6;
 }
 
+// 夜间模式时
 .night-mode {
 	--navbarThemeColor: #1f1f1f;
 	--navbarColor: #ffffff;
 	--sidebarThemeColor: #1f1f1f;
-	--contentBgColor: #000000;
-	--border-color: #303030;
-	--el-border-color-base: #303030;
-	--el-border-color-light: #303030;
+	--contentBgColor: #1f1f1f;
+	--border-color: #fff;
+	--el-border-color-base: #fff;
+	--el-border-color-light: #fff;
 	--drawerBackgroundColor: #1f1f1f;
+	--el-text-color-primary: #fff;
+	--el-text-color-regular: #fff;
+	--el-text-color-regular: #606266;
 }
 
 @systemTheme: var(--systemThemeColor);

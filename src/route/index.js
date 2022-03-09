@@ -32,13 +32,25 @@ const routes = [
         path: '/table',
         name: 'basetable',
         meta: {
-          title: '表格',
+          title: '数据列表',
         },
         component: () =>
           import(
             /* webpackChunkName: "basetable" */ '@/pages/home/baseTable/index.vue'
           ),
       },
+      {
+        path: '/picturEditor',
+        name: 'picturEditor',
+        meta: {
+          title: '图片编辑',
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "picturEditor" */ '@/pages/home/picturEditor/index.vue'
+          ),
+      },
+
       {
         path: '/tableDemo',
         name: 'tableDemo',
@@ -65,7 +77,7 @@ const routes = [
         path: '/tabs',
         name: 'tabs',
         meta: {
-          title: 'tab标签',
+          title: 'tab选项卡',
         },
         component: () =>
           import(/* webpackChunkName: "tabs" */ '@/pages/home/tabs/index.vue'),

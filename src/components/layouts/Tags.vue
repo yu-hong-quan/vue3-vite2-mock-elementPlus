@@ -117,7 +117,7 @@ watch(
   position: relative;
   height: 40px;
   overflow: hidden;
-  background: @drawerBackgroundColor;
+  background: @contentBgColor;
   padding-right: 120px;
   box-shadow: 0px 12px 8px -12px @navbarTheme;
   ul {

@@ -137,7 +137,12 @@ module.exports = [
             {
               icon: 'BorderlessTableOutlined',
               index: 'table',
-              title: '基础表格',
+              title: '数据列表',
+            },
+            {
+              icon: 'PictureFilled',
+              index: 'picturEditor',
+              title: '图片自定义编辑',
             },
             {
               icon: 'TableOutlined',

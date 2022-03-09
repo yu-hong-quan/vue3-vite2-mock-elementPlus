@@ -1,1 +1,0 @@
-import{_ as r}from"./plugin-vue_export-helper.21dcd24c.js";import{l as e,m as o}from"./vue.8a0c43f5.js";const a={id:"baseForm"};var s=r({},[["render",function(r,s){return e(),o("div",a,"baseForm")}]]);export{s as default};
