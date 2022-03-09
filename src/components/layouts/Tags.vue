@@ -52,7 +52,6 @@ const $store = useStore();
 let tagsList = computed(() => $store.state.layout.tagsList);
 let showTags = computed(() => tagsList.value.length > 0);
 let isTagsShow = computed(() => $store.state.layout.isTagsShow);
-console.log('tags状态：' + isTagsShow.value)
 const isActive = (path) => {
   return path === $route.fullPath;
 };

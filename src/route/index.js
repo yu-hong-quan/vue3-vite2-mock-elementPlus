@@ -138,7 +138,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = `${to.meta.title} | 内卷小屋`;
   const role = localStorage.getItem('ms_username');
-  console.log(to.path);
   if (!role && to.path !== '/login') {
     next('/login');
   } else if (to.meta.permission) {

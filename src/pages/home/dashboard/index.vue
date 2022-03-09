@@ -167,7 +167,6 @@ let loadingBlan = ref(true)
 
 
 let updateFnc = (scope) => {
-  console.log(scope)
   scopes = scope;
   dialogData.value.name = scope.row.title
   dialogData.value.visible = true

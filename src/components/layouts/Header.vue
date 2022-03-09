@@ -177,7 +177,6 @@ const isChildrenDrawer = (val) => {
 }
 
 onMounted(() => {
-  console.log(self.$i18n.locale)
   if (self.$i18n.locale == 'zh') {
     window.localStorage.setItem('languageType', self.$i18n.locale)
     i18nImg.value = '../../../src/assets/zh.png'

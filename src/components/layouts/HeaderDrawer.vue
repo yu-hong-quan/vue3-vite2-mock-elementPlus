@@ -117,7 +117,6 @@ const props = defineProps({
 
 // 自定义函数，父组件可以触发该函数用户子组件通信父组件
 const em = defineEmits(['isParentDrawer'])
-console.log(props.isSetting)
 let isShow = ref(false)
 isShow.value = props.isSetting
 
@@ -131,7 +130,6 @@ const hadeClose = (e) => {
 }
 
 let isTagsShow = computed(() => $store.state.layout.isTagsShow);
-console.log('HeaderDrawer：' + $store.state.layout.isTagsShow)
 watch(
   () => props.isSetting,
   (newValue, oldValue) => {

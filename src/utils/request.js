@@ -73,7 +73,6 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'));
     } else {
-      console.log('成功');
       return Promise.resolve(res);
     }
   },
@@ -95,7 +94,7 @@ export default {
    * @param {Object} params [请求时携带的参数]
    * @param {Object} headers  请求相关参数设置
    */
-  get(url, params, headers) {
+  get (url, params, headers) {
     headers = headers || {};
     return new Promise((resolve, reject) => {
       service
@@ -118,7 +117,7 @@ export default {
    * @param {Object} params [请求时携带的参数]
    * @param {Object} headers  请求相关参数设置
    */
-  post(url, params, headers) {
+  post (url, params, headers) {
     headers = headers || {};
     return new Promise((resolve, reject) => {
       service
