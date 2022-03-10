@@ -1,9 +1,9 @@
 <template>
   <div class="drawing-container">
     <div id="tui-image-editor"></div>
-    <el-button class="save" type="primary" size="default" @click="save"
+    <!-- <el-button class="save" type="primary" size="default" @click="save"
       >保存</el-button
-    >
+    > -->
   </div>
 </template>
 
@@ -102,21 +102,22 @@ const customTheme = {
   "header.backgroundColor": "#333",
   "header.border": "0px",
 
-  // load button
-  "loadButton.backgroundColor": "#fff",
-  "loadButton.border": "1px solid #ddd",
-  "loadButton.color": "",
-  "loadButton.fontFamily": "NotoSans, sans-serif",
-  "loadButton.fontSize": "12px",
-  "loadButton.display": "none", // 隐藏
+  // // load button
+  // "loadButton.backgroundColor": "#fff",
+  // "loadButton.border": "1px solid #ddd",
+  // "loadButton.color": "",
+  // "loadButton.fontFamily": "NotoSans, sans-serif",
+  // "loadButton.fontSize": "20px",
+  // "loadButton.display": "flex", // 隐藏
+  // "loadButton.textAlign": "center",
 
-  // download button
-  "downloadButton.backgroundColor": "#fdba3b",
-  "downloadButton.border": "1px solid #fdba3b",
-  "downloadButton.color": "#fff",
-  "downloadButton.fontFamily": "NotoSans, sans-serif",
-  "downloadButton.fontSize": "12px",
-  "downloadButton.display": "none", // 隐藏
+  // // download button
+  // "downloadButton.backgroundColor": "#fdba3b",
+  // "downloadButton.border": "1px solid #fdba3b",
+  // "downloadButton.color": "#fff",
+  // "downloadButton.fontFamily": "NotoSans, sans-serif",
+  // "downloadButton.fontSize": "12px",
+  // "downloadButton.display": "none", // 隐藏
 
   // icons default
   "menu.normalIcon.color": "#fff",
