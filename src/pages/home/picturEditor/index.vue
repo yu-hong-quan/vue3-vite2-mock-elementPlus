@@ -1,11 +1,11 @@
 
 <template>
   <div id="picturEditor">
-    <div class="crumbs">
+    <!-- <div class="crumbs">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item> 图片自定义编辑 </el-breadcrumb-item>
       </el-breadcrumb>
-    </div>
+    </div> -->
     <BasicContainer>
       <DrawingImg></DrawingImg>
     </BasicContainer>

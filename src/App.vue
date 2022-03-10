@@ -16,8 +16,7 @@ onMounted(() => {
   ElNotification.info({
     title: "欢迎光临《内卷吧》",
     message: "卷起来吧，前端人",
-    "show-close": false,
-    duration: 10000,
+    duration: 5000,
     offset: 104,
   });
 });
