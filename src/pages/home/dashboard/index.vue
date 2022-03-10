@@ -28,7 +28,7 @@
             </i>
             <div class="grid-cont-right">
               <div class="grid-num">1234</div>
-              <div>昨日订单数</div>
+              <div class="grid-text">昨日订单数</div>
             </div>
           </div>
         </el-card>
@@ -41,7 +41,7 @@
             </i>
             <div class="grid-cont-right">
               <div class="grid-num">321</div>
-              <div>待付款订单</div>
+              <div class="grid-text">待付款订单</div>
             </div>
           </div>
         </el-card>
@@ -54,7 +54,7 @@
             </i>
             <div class="grid-cont-right">
               <div class="grid-num">5000</div>
-              <div>待发货订单</div>
+              <div class="grid-text">待发货订单</div>
             </div>
           </div>
         </el-card>
@@ -67,7 +67,7 @@
             </i>
             <div class="grid-cont-right">
               <div class="grid-num">200</div>
-              <div>售后中订单</div>
+              <div class="grid-text">售后中订单</div>
             </div>
           </div>
         </el-card>
@@ -337,7 +337,8 @@ onMounted(() => {
 }
 </style>
 
-<style scoped>
+<style lang="less" scoped>
+@import '@/styles/themes.less';
 .el-row {
   width: 100%;
   margin-bottom: 20px;
@@ -360,6 +361,9 @@ onMounted(() => {
   font-size: 40px;
   font-weight: bold;
   margin-bottom: 10px;
+}
+.grid-text {
+  color: @navbarColor;
 }
 
 .grid-con-icon {

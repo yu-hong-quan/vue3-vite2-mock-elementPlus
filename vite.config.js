@@ -63,7 +63,7 @@ export default defineConfig({
     // 如果报错提示 __dirname 找不到 则需要 yarn add @types/node --save-dev
     '@': path.resolve(__dirname, 'src'),
     'coms': path.resolve(__dirname, 'src/components'),
-    'utils': path.resolve(__dirname, 'src/utils'),
+    'utils': path.resolve(__dirname, 'src/utils')
   },
   plugins: [
     vue(),

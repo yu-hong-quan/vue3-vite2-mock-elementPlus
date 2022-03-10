@@ -47,6 +47,10 @@ html {
 .el-notification__group .el-icon {
   position: absolute !important;
 }
+.el-notification__title {
+  color: @sidebarTheme;
+}
+
 .el-notification.right {
   right: 9px;
 }
