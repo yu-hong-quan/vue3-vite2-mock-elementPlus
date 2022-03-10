@@ -151,7 +151,7 @@ module.exports = [
             },
             {
               icon: 'formOutlined',
-              index: '3',
+              index: 'form',
               title: '表单相关',
               subs: [
                 {
@@ -159,7 +159,7 @@ module.exports = [
                   title: '基本表单',
                 },
                 {
-                  index: 'tabledemo',
+                  index: 'tableDemo',
                   title: '表格组件',
                 },
                 {
@@ -170,7 +170,7 @@ module.exports = [
             },
             {
               icon: 'WarningFilled',
-              index: '7',
+              index: 'warning',
               title: '错误处理',
               subs: [
                 {

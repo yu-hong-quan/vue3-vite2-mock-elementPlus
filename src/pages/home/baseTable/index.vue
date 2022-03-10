@@ -215,7 +215,7 @@ onMounted(() => {
 // 获取easy-mock 的模拟数据
 const getData = () => {
   proxy.$axios.get(`/api/table/getList`).then(res => {
-    console.log('列表数据：', res)
+    // console.log('列表数据：', res)
     setTimeout(() => {
       tableData.value = res.list
       pageTotal.value = res.pageTotal || 50
