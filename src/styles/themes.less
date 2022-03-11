@@ -1,0 +1,54 @@
+// 日间模式时(默认)
+:root {
+	--systemThemeColor: #0960bd;
+	--navbarThemeColor: #304156;
+	--navbarColor: rgba(0, 0, 0, 0.85); // 当navbar背景为白色时
+	--sidebarThemeColor: #304156;
+	--sidebarThemeColorActive: #0960bd;
+	--systemThemeColorActive: #93ffff;
+	--contentBgColor: #fff;
+	--border-color: #f0f0f0;
+	--drawerBackgroundColor: #f0f2f5;
+	--el-border-color-base: #dcdfe6;
+}
+
+// 夜间模式时
+.night-mode {
+	--navbarThemeColor: #1f1f1f;
+	--navbarColor: #ffffff;
+	--sidebarThemeColor: #1f1f1f;
+	--contentBgColor: #1f1f1f;
+	--border-color: #fff;
+	--el-border-color-base: #fff;
+	--el-border-color-light: #fff;
+	--drawerBackgroundColor: #1f1f1f;
+	--el-text-color-primary: #fff;
+	--el-text-color-regular: #606266;
+}
+
+@systemTheme: var(--systemThemeColor);
+@navbarTheme: var(--navbarThemeColor);
+@drawerBackgroundColor: var(--drawerBackgroundColor);
+@sidebarTheme: var(--sidebarThemeColor);
+@sidebarThemeActive: var(--sidebarThemeColorActive);
+@systemThemeActive: var(--systemThemeColorActive);
+@sidebarThemeGroup: #444b51;
+@sidebarThemeBg: #001529;
+@sidebarColor: #ffffffb3;
+@navbarColor: var(--navbarColor);
+
+@contentBgColor: var(--contentBgColor);
+
+@headerHeight: 48px;
+@logoWidth: 200px;
+
+// 边距
+@marginWidth: 1rem;
+@paddingWidth: 1rem;
+@media screen and(max-width: 1000px) {
+	@paddingWidth: 10px;
+}
+
+// 边框
+@borderColor: var(--border-color);
+@border: 1px solid @borderColor;
