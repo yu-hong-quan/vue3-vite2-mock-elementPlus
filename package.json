@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
+    "@kangc/v-md-editor": "^2.3.14",
     "axios": "^0.24.0",
     "default-passive-events": "^2.0.0",
     "echarts": "^5.2.2",
