@@ -135,6 +135,11 @@ module.exports = [
               title: '系统首页',
             },
             {
+              icon: 'TableOutlined',
+              index: 'tabs',
+              title: 'tab选项卡',
+            },
+            {
               icon: 'BorderlessTableOutlined',
               index: 'table',
               title: '数据列表',
@@ -145,9 +150,9 @@ module.exports = [
               title: '图片自定义编辑',
             },
             {
-              icon: 'TableOutlined',
-              index: 'tabs',
-              title: 'tab选项卡',
+              icon: 'BorderlessTableOutlined',
+              index: 'markDown',
+              title: 'MarkDown',
             },
             {
               icon: 'formOutlined',

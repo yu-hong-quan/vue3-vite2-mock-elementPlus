@@ -50,7 +50,17 @@ const routes = [
             /* webpackChunkName: "picturEditor" */ '@/pages/home/picturEditor/index.vue'
           ),
       },
-
+      {
+        path: '/markDown',
+        name: 'markDown',
+        meta: {
+          title: '图片编辑',
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "markDown" */ '@/pages/home/markDown/index.vue'
+          ),
+      },
       {
         path: '/tableDemo',
         name: 'tableDemo',
