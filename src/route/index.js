@@ -1,3 +1,17 @@
+/*
+ * @Descripttion: 
+ * @Author: 小余
+ * @Date: 2022-01-10 09:48:05
+ * @LastEditors: voanit
+ * @LastEditTime: 2022-03-22 17:16:50
+ */
+/*
+ * @Descripttion: 
+ * @Author: 小余
+ * @Date: 2022-01-10 09:48:05
+ * @LastEditors: voanit
+ * @LastEditTime: 2022-03-22 17:14:53
+ */
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
@@ -54,7 +68,7 @@ const routes = [
         path: '/markDown',
         name: 'markDown',
         meta: {
-          title: '图片编辑',
+          title: 'markDown富文本',
         },
         component: () =>
           import(
@@ -62,25 +76,25 @@ const routes = [
           ),
       },
       {
-        path: '/tableDemo',
-        name: 'tableDemo',
+        path: '/dragSort',
+        name: 'dragSort',
         meta: {
-          title: '封装表格组件',
+          title: '拖拽排序',
         },
         component: () =>
           import(
-            /* webpackChunkName: "tableDemo" */ '@/pages/home/table/index.vue'
+            /* webpackChunkName: "dragSort" */ '@/pages/home/dragSort/index.vue'
           ),
       },
       {
-        path: '/form',
-        name: 'baseform',
+        path: '/draggable',
+        name: 'draggable',
         meta: {
-          title: '表单',
+          title: '基础拖拽',
         },
         component: () =>
           import(
-            /* webpackChunkName: "baseform" */ '@/pages/home/baseForm/index.vue'
+            /* webpackChunkName: "draggable" */ '@/pages/home/draggable/index.vue'
           ),
       },
       {
@@ -105,15 +119,15 @@ const routes = [
           ),
       },
       {
-        path: '/upload',
-        name: 'upload',
+        path: '/customEditing',
+        name: 'customEditing',
         meta: {
-          title: '上传插件',
+          title: '自定义编辑页面',
           permission: true,
         },
         component: () =>
           import(
-            /* webpackChunkName: "upload" */ '@/pages/home/upload/index.vue'
+            /* webpackChunkName: "customEditing" */ '@/pages/home/customEditing/index.vue'
           ),
       },
       {

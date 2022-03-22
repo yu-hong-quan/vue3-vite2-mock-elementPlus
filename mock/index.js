@@ -156,20 +156,20 @@ module.exports = [
             },
             {
               icon: 'formOutlined',
-              index: 'form',
-              title: '表单相关',
+              index: 'draggable',
+              title: '低代码平台',
               subs: [
                 {
-                  index: 'form',
-                  title: '基本表单',
+                  index: 'draggable',
+                  title: '基础拖拽',
                 },
                 {
-                  index: 'tableDemo',
-                  title: '表格组件',
+                  index: 'dragSort',
+                  title: '拖拽排序',
                 },
                 {
-                  index: 'upload',
-                  title: '文件上传',
+                  index: 'customEditing',
+                  title: '自定义编辑页面',
                 },
               ],
             },
@@ -180,7 +180,7 @@ module.exports = [
               subs: [
                 {
                   index: 'permission',
-                  title: '权限测试',
+                  title: '权限管理',
                 },
                 {
                   index: '404',

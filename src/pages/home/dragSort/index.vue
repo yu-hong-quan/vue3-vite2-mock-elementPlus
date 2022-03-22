@@ -1,10 +1,10 @@
 <template>
-  <div class="table">
-    <BasicContainer> abc </BasicContainer>
+  <div class="dragSort">
+    <BasicContainer> dragSort </BasicContainer>
   </div>
 </template>
 
-<script setup name="table">
+<script setup name="dragSort">
 import { reactive, ref } from 'vue'
 
 </script>
