@@ -3,7 +3,7 @@
  * @Author: 小余
  * @Date: 2022-01-10 09:48:05
  * @LastEditors: voanit
- * @LastEditTime: 2022-03-22 18:28:17
+ * @LastEditTime: 2022-03-23 11:55:41
 -->
 <template>
   <div id="draggable">
@@ -13,9 +13,10 @@
         <Draggable
           v-model="list2"
           item-key="id"
-          :animation="100"
+          :animation="0"
           :sort="true"
           :group="{ name: 'article', pull: 'clone' }"
+          @start="start1"
           @end="end1"
           class="dragArea1"
         >
@@ -79,19 +80,32 @@ const list2 = reactive(
 )
 
 const end1 = (ev) => {
-  console.log("从上方拖入下方", ev)
-  console.log(ev.item._underlying_vm_)
+  console.log("松开", ev)
   let data = ev;
+  let item = null;
   if (ev.to.className === 'dragArea2') {
+    // 以下做去重处理
+    if (list1.length) {
+      item = list1.find((newItem, index) => {
+        return newItem.id === data.item._underlying_vm_.id
+      })
+      if (item) {
+        list1.splice(list1.indexOf(item), 1)
+      }
+    }
     list1.splice(data.newIndex, 0, data.item._underlying_vm_)
   }
+  if (ev.to.className === 'dragArea1') {
+    let newItem = list2[data.newIndex]
+    list2[data.newIndex] = data.item._underlying_vm_
+    list2[data.oldIndex] = newItem
+  }
+  data.item.className = 'list-complete-item1'
+}
 
-  // for (let index = 0; index < list2.length; index++) {
-  //   const element = list2[index];
-  //   if (data.item._underlying_vm_.id !== element.id) {
-  //     console.log(element.id)
-  //   }
-  // }
+const start1 = (event) => {
+  console.log("开始拖动", event)
+  event.item.className = event.item.className + ' active'
 }
 
 const start2 = (event) => {
@@ -99,7 +113,14 @@ const start2 = (event) => {
 }
 
 const end2 = (ev) => {
-  console.log("从下方拖入上方", ev)
+  console.log("松开", ev)
+  console.log(ev.item._underlying_vm_)
+  let data = ev;
+  if (ev.to.className === 'dragArea2') {
+    let newItem = list1[data.newIndex]
+    list1[data.newIndex] = data.item._underlying_vm_
+    list1[data.oldIndex] = newItem
+  }
 }
 
 const handleDel = (index, id) => {
@@ -111,6 +132,11 @@ const handleDel = (index, id) => {
 </script>
 
 <style lang="less" scoped>
+@import '@/styles/themes.less';
+
+#draggable {
+  color: @navbarColor;
+}
 .dragList-list1 {
   display: flex;
   flex-direction: row;
@@ -126,8 +152,10 @@ const handleDel = (index, id) => {
   height: 50px;
   line-height: 50px;
   border: 1px solid #bfcbd9;
-  transition: all 1s;
+  // transition: all 0.2s;
   text-align: center;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 .dragArea1 {
   width: 100%;
@@ -150,17 +178,22 @@ const handleDel = (index, id) => {
 .list-complete-item2 {
   cursor: pointer;
   font-size: 14px;
-
   display: inline-block;
   margin: 10px;
   width: 100px;
   line-height: 30px;
   text-align: center;
   border: 1px solid #bfcbd9;
-  transition: all 1s;
+  // transition: all 1s;
+  border-radius: 5px;
 }
 .el-icon-delete {
   width: 1em;
   height: 1em;
+}
+
+.active {
+  border: 1px solid rgb(27, 27, 224);
+  box-shadow: 0 0 10px #ccc;
 }
 </style>
