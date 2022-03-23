@@ -161,11 +161,11 @@ module.exports = [
               subs: [
                 {
                   index: 'draggable',
-                  title: '基础拖拽',
+                  title: '基础拖拽示例',
                 },
                 {
                   index: 'dragSort',
-                  title: '拖拽排序',
+                  title: '拖拽小Demo',
                 },
                 {
                   index: 'customEditing',

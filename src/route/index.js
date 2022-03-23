@@ -3,7 +3,7 @@
  * @Author: 小余
  * @Date: 2022-01-10 09:48:05
  * @LastEditors: voanit
- * @LastEditTime: 2022-03-22 17:16:50
+ * @LastEditTime: 2022-03-23 13:58:34
  */
 /*
  * @Descripttion: 
@@ -79,7 +79,7 @@ const routes = [
         path: '/dragSort',
         name: 'dragSort',
         meta: {
-          title: '拖拽排序',
+          title: '拖拽小Demo',
         },
         component: () =>
           import(
@@ -90,7 +90,7 @@ const routes = [
         path: '/draggable',
         name: 'draggable',
         meta: {
-          title: '基础拖拽',
+          title: '基础拖拽示例',
         },
         component: () =>
           import(
