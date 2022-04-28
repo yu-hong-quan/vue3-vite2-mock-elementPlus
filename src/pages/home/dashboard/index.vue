@@ -164,8 +164,6 @@ let dialogData = ref({
 let scopes = null;
 let loadingBlan = ref(true)
 
-
-
 let updateFnc = (scope) => {
   scopes = scope;
   dialogData.value.name = scope.row.title
@@ -313,7 +311,7 @@ onMounted(() => {
   }
   .bottom_right {
     float: left;
-    width: 995px;
+    width: 50%;
     padding: 20px;
     box-sizing: border-box;
     .clearfix {

@@ -1,17 +1,4 @@
-/*
- * @Descripttion: 
- * @Author: 小余
- * @Date: 2022-01-10 09:48:05
- * @LastEditors: voanit
- * @LastEditTime: 2022-03-23 13:58:34
- */
-/*
- * @Descripttion: 
- * @Author: 小余
- * @Date: 2022-01-10 09:48:05
- * @LastEditors: voanit
- * @LastEditTime: 2022-03-22 17:14:53
- */
+
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
@@ -160,7 +147,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} | 内卷小屋`;
+  document.title = `${to.meta.title} | 内卷吧`;
   const role = localStorage.getItem('ms_username');
   if (!role && to.path !== '/login') {
     next('/login');

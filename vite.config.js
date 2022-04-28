@@ -1,3 +1,10 @@
+/*
+ * @Descripttion: 
+ * @Author: 小余
+ * @Date: 2021-12-29 17:26:33
+ * @LastEditors: voanit
+ * @LastEditTime: 2022-04-28 14:32:05
+ */
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
@@ -48,6 +55,7 @@ export default defineConfig({
   server: {
     open: true,
     host: 'localhost',
+    hot: true,//开启热更新
     port: 3000,
     proxy: {
       //代理
