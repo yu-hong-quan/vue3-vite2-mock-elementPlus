@@ -140,7 +140,7 @@ module.exports = [
               title: 'tab选项卡',
             },
             {
-              icon: 'BorderlessTableOutlined',
+              icon: 'FundFilled',
               index: 'table',
               title: '数据列表',
             },
@@ -150,7 +150,12 @@ module.exports = [
               title: '图片自定义编辑',
             },
             {
-              icon: 'BorderlessTableOutlined',
+              icon: 'HeatMapOutlined',
+              index: '3DExhibitionHall',
+              title: '3D汽车展示厅',
+            },
+            {
+              icon: 'CodeOutlined',
               index: 'markDown',
               title: 'MarkDown',
             },

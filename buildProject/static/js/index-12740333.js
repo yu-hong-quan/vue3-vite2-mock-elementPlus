@@ -1,0 +1,1 @@
+import{_ as r}from"./plugin-vue_export-helper-46f75680.js";import{q as e,t as o}from"./vue-18c32ca4.js";const t={id:"errorPage403"};var a=r({},[["render",function(r,a){return e(),o("div",t,"403")}]]);export{a as default};

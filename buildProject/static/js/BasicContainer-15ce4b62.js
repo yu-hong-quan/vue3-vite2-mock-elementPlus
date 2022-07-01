@@ -1,0 +1,1 @@
+import{_ as s}from"./plugin-vue_export-helper-46f75680.js";import{q as a,t as r,v as e}from"./vue-18c32ca4.js";const o={class:"basic-container"};var t=s({},[["render",function(s,t){return a(),r("div",o,[e(s.$slots,"default",{},void 0,!0)])}],["__scopeId","data-v-189c0927"]]);export{t as _};

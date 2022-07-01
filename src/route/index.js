@@ -52,6 +52,17 @@ const routes = [
           ),
       },
       {
+        path: '/3DExhibitionHall',
+        name: '3DExhibitionHall',
+        meta: {
+          title: '3D汽车展示厅',
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "3DExhibitionHall" */ '@/pages/home/3DExhibitionHall/index.vue'
+          ),
+      },
+      {
         path: '/markDown',
         name: 'markDown',
         meta: {

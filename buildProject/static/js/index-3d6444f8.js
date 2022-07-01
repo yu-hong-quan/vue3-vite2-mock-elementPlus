@@ -1,0 +1,1 @@
+import{_ as r}from"./plugin-vue_export-helper-46f75680.js";import{q as e,t as s}from"./vue-18c32ca4.js";const i={id:"permission"};var o=r({},[["render",function(r,o){return e(),s("div",i,"permission")}]]);export{o as default};
