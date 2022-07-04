@@ -3,7 +3,7 @@
  * @Author: 小余
  * @Date: 2021-12-29 17:26:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-07-01 16:37:21
+ * @LastEditTime: 2022-07-04 17:33:54
  */
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -26,7 +26,7 @@ import viteCompression from 'vite-plugin-compression';
 export default defineConfig({
   base: '/',
   build: {
-    outDir: 'buildProject', // 打包后文件包名称
+    outDir: 'dist', // 打包后文件包名称
     chunkSizeWarningLimit: 500, //提高超大静态资源警告门槛
     minify: 'terser',
     cssCodeSplit: false, // 如果设置为false，整个项目中的所有 CSS 将被提取到一个 CSS 文件中
@@ -59,6 +59,8 @@ export default defineConfig({
             extType = 'img'
           } else if (/\.(woff2?|eot|ttf|otf)(\?.*)?$/i.test(assetInfo.name)) {
             extType = 'fonts'
+          } else if (/\.(bin?|obj|gltf)(\?.*)?$/i.test(assetInfo.name)) {
+            extType = 'model'
           }
           return `static/${extType}/[name]-[hash][extname]`
         },
@@ -76,7 +78,7 @@ export default defineConfig({
     proxy: {
       //代理
       '/api': {
-        target: 'http://192.168.3.10:5000',
+        target: 'http://192.168.0.124:5000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },

@@ -1,1 +1,0 @@
-import{_ as t}from"./BasicContainer-15ce4b62.js";import{_ as s}from"./plugin-vue_export-helper-46f75680.js";import{q as r,t as a,K as o,I as e,$ as i}from"./vue-18c32ca4.js";const n={},u={id:"customEditing"},c=i(" customEditing ");var m=s(n,[["render",function(s,i){const n=t;return r(),a("div",u,[o(n,null,{default:e((()=>[c])),_:1})])}]]);export{m as default};

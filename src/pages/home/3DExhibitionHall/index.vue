@@ -1,17 +1,23 @@
 
 <template>
-  <div id="exhibitionHall">
+  <div class="exhibitionHall">
     <BasicContainer>
       <div class="maskLoading" v-if="isLoading">
         <div class="loading">
           <div :style="{ width: loadingWidth + '%' }"></div>
         </div>
-        <div style="padding-left: 10px">{{ parseInt(loadingWidth) }}%</div>
+        <div style="padding-left: 10px">
+          {{ parseInt(loadingWidth) }}% Loding Model 3D...
+        </div>
       </div>
       <div class="mask">
-        <p>x : {{ x }} y:{{ y }} z :{{ z }}</p>
-        <button @click="isAutoFun">转动车</button>
-        <button @click="stop">停止</button>
+        <div style="margin-left: 20px">
+          <p style="margin-bottom: 10px">
+            x : {{ x }} 丨 y : {{ y }} 丨 z : {{ z }}
+          </p>
+          <el-button type="primary" @click="isAutoFun"> > 转动车</el-button>
+          <el-button type="primary" @click="stop"> > 停止</el-button>
+        </div>
         <div class="flex">
           <div
             @click="setCarColor(index)"
@@ -73,15 +79,17 @@ const setLight = () => {
 const setScene = () => {
   scene = new Scene()
   renderer = new WebGLRenderer()
-  renderer.setSize(innerWidth, innerHeight)
-  document.querySelector('#exhibitionHall').appendChild(renderer.domElement)
-
+  console.log(innerWidth, innerHeight);
+  // renderer.setSize(innerWidth, innerHeight)
+  renderer.setSize(1320, 900)
+  document.querySelector('.basic-container').appendChild(renderer.domElement)
 }
 
 // 创建相机
 const setCamera = () => {
   const { x, y, z } = defaultMap
-  camera = new PerspectiveCamera(60, innerWidth / innerHeight, 1, 1000)
+  camera = new PerspectiveCamera(60, 1320 / 900, 1, 1000)
+  // camera = new PerspectiveCamera(60, innerWidth / innerHeight, 1, 1000)
   camera.position.set(x, y, z)
 }
 
@@ -99,7 +107,6 @@ const render = () => {
   map.y = Number.parseInt(camera.position.y)
   map.z = Number.parseInt(camera.position.z)
 }
-
 
 
 // 循环场景 、相机、 位置更新
@@ -139,12 +146,13 @@ const loadFile = (url) => {
         resolve(gltf)
       }, ({ loaded, total }) => {
         let load = Math.abs(loaded / total * 100)
-        loadingWidth.value = load
+
         if (load >= 100) {
           setTimeout(() => {
             isLoading.value = false
           }, 1000)
         }
+        loadingWidth.value = load
         console.log((loaded / total * 100) + '% loaded')
       },
       (err) => {
@@ -161,7 +169,8 @@ const init = async () => {
   setCamera()
   setLight()
   setControls()
-  const gltf = await loadFile('@/assets/scene.gltf')
+  const gltf = await loadFile('/src/assets/scene.gltf')
+  // 将模型加入到场景中
   scene.add(gltf.scene)
   loop()
 }
@@ -170,10 +179,15 @@ onMounted(init)
 </script>
 
 <style lang="less" scoped>
-#exhibitionHall {
+.exhibitionHall {
   width: 100%;
   height: 100%;
   position: relative;
+  .basic-container {
+    height: 900px;
+    position: relative;
+    padding: 5px;
+  }
 }
 .maskLoading {
   background: #000;
@@ -204,12 +218,6 @@ onMounted(init)
   width: 0;
   transition-duration: 500ms;
   transition-timing-function: ease-in;
-}
-
-canvas {
-  width: 100%;
-  height: 100%;
-  margin: auto;
 }
 
 .mask {
