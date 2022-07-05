@@ -133,6 +133,7 @@ export const _getThemes = (params) => {
     dom: '.el-breadcrumb',
     cls: 'is-show'
   })
+  console.log(themes);
   toggleClass({
     flag: themes?.navbarThemeColor ? themes.navbarThemeColor === '#FFFFFF' : true,
     cls: 'navbar--white'
