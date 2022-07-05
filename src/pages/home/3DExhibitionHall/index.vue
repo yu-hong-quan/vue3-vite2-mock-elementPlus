@@ -13,13 +13,11 @@
       <div class="mask">
         <div style="margin-left: 20px">
           <p style="margin-bottom: 10px">
-            x : {{ x }} 丨 y : {{ y }} 丨 z : {{ z }}
+            三维坐标点信息： x : {{ x }} , y : {{ y }} , z : {{ z }}
           </p>
           <el-button type="primary" @click="isAutoFun"> > 转动车</el-button>
           <el-button type="primary" @click="stop"> > 停止</el-button>
-          <el-button type="primary" @click="onDocumentMouseDown">
-            > 查看内饰</el-button
-          >
+          <el-button type="primary" @click="action"> > 查看内饰</el-button>
         </div>
         <div class="flex">
           <div
@@ -47,6 +45,7 @@ import {
   Scene,
   WebGLRenderer,
   GridHelper,
+  AmbientLight,
   BoxGeometry,//正方体
   SphereGeometry,//球体
   MeshLambertMaterial,//哑光材质
@@ -141,11 +140,11 @@ const render = () => {
 
 // 循环场景 、相机、 位置更新
 const loop = () => {
-  renderer.render(scene, camera)
+  stats.update()
   controls.update()
   requestAnimationFrame(loop)
-  stats.update();
-
+  TWEEN.update()
+  renderer.render(scene, camera)
   // if (composer) {
   //   composer.render()
   // }
@@ -220,7 +219,7 @@ const resizeWindow = () => {
   }, false);
 }
 
-// 添加正方体
+// 添加圆体
 const addMesh = () => {
   let geometry = new SphereGeometry(7, 20, 20);//盒子模型
   let coordinate = [
@@ -231,14 +230,6 @@ const addMesh = () => {
     { x: -121, y: 26, z: 110 },//左后车门点
     { x: 0, y: 36, z: -228 },//前车盖点
   ]
-  // for (var i = 0; i < 100; i++) {
-  //   var material = new MeshBasicMaterial({ color: "gray" });//材料
-  //   var mesh = new Mesh(geometry, material);
-  //   mesh.position.x = (Math.random() - 0.5) * 1000;
-  //   mesh.position.y = (Math.random() - 0.5) * 1000;
-  //   mesh.position.z = (Math.random() - 0.5) * 1000;
-  //   scene.add(mesh);
-  // }
   for (let i = 0; i < coordinate.length; i++) {
     const item = coordinate[i];
     let material = new MeshLambertMaterial({
@@ -274,7 +265,7 @@ const outlineObj = (selectedObjects) => {
   // 物体边缘发光通道
   outlinePass = new OutlinePass(new Vector2(100, 100), scene, camera)
   outlinePass.selectedObjects = selectedObjects
-  outlinePass.edgeStrength = 10.0 // 边框的亮度
+  outlinePass.edgeStrength = 20.0 // 边框的亮度
   outlinePass.edgeGlow = 1 // 光晕[0,1]
   outlinePass.usePatternTexture = false // 是否使用父级的材质
   outlinePass.edgeThickness = 1.0 // 边框宽度
@@ -292,10 +283,44 @@ const outlineObj = (selectedObjects) => {
   composer.addPass(effectFXAA)
 }
 
+const setAmbientLight = () => {
+  let ambient = new Three.AmbientLight(0xFFFFFF)
+  ambient.name = '环境光'
+  scene.add(ambient)
+}
+
+const action = () => {
+  var tweena = cameraCon({ x: 0, y: 9, z: -60 }, 4000)//{ x: -70, y: 24, z: 3 }
+  var tweenb = cameraCon({ x: -1, y: 1, z: 8 }, 4000)
+  //var tweenc = this.cameraCon({ x: -20, y: 100, z: 100 }, 9000)
+  //var tweend = this.cameraCon({ x: 0, y: 50, z: 200 }, 4000)
+
+  // 链式补间：tween.chain
+  // 如果有多组补间动画，想要a组动画结束后立即启动b组动画，则需要使用tweena.chain(tweenb)
+  // tweena.chain(tweenb)
+
+  //tweenb.chain(tweenc)
+  //tweenc.chain(tweend)
+  // tweend.chain(tweena)
+
+  // tweena.start()
+  tweenb.start()
+}
+const cameraCon = (p2, time) => {
+  let p1 = { x: 3, y: 66, z: -422 };//动画预开始 相机初始位置
+  var tween1 = new TWEEN.Tween(p1).to(p2, time).easing(TWEEN.Easing.Quadratic.InOut)
+  tween1.onUpdate(() => {
+    camera.position.set(p1.x, p1.y, p1.z)
+    camera.lookAt(0, 0, 0)
+    // this.controls.target.set(0, 0, 0) // 确保镜头移动后，视觉中心还在圆点处
+    // this.controls.update()
+  })
+  return tween1
+}
+
 const onDocumentMouseDown = () => {
 
 }
-
 
 //初始化所有函数
 const init = async () => {
@@ -304,6 +329,7 @@ const init = async () => {
   setLight()
   setControls()
   setGridHelper()
+  // setAmbientLight()
   // resizeWindow()
   const gltf = await loadFile('/src/assets/scene.gltf')
   // 将模型加入到场景中
@@ -312,19 +338,16 @@ const init = async () => {
   loop()
 }
 
-//用vue钩子函数调用
+//vue3钩子函数
 onMounted(() => {
   init();
-
-
-  // 性能检测插件
+  // 添加性能检测插件
   stats.domElement.style.position = 'absolute'; //绝对坐标  
   stats.domElement.style.left = '10px';// (0,0)px,左上角  
   stats.domElement.style.top = '10px';
   console.log(document.getElementsByTagName('BasicContainer'));
   document.querySelector('.basic-container').appendChild(stats.domElement)
 })
-
 onBeforeUnmount(() => {
   // vue2的beforeDestroy(vue3中的onBeforeUnmount)内将这些track到的3D物体内存释放,保证体验性能流畅
   try {
