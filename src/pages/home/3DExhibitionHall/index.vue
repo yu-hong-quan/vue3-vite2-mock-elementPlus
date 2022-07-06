@@ -75,6 +75,8 @@ import {
   WebGLRenderer,
   GridHelper,
   AmbientLight,
+  Vector3,
+  Box3,
   BoxGeometry,//正方体
   SphereGeometry,//球体
   MeshLambertMaterial,//哑光材质
@@ -148,12 +150,12 @@ const setLight = () => {
 const setScene = () => {
   scene = new Scene()
   renderer = new WebGLRenderer({
-    antialias: false, //开启抗锯齿 卡顿，暂时关闭
+    antialias: true, //开启抗锯齿 卡顿，暂时关闭
     alpha: true, //开启背景透明
   });
   console.log(innerWidth, innerHeight);
-  // renderer.setSize(innerWidth, innerHeight)
-  renderer.setSize(1640, 845)
+  renderer.setSize(innerWidth, innerHeight)
+  // renderer.setSize(1640, 845)
   document.querySelector('.basic-container').appendChild(renderer.domElement)
 }
 
@@ -166,8 +168,8 @@ const setScene = () => {
  */
 const setCamera = () => {
   const { x, y, z } = defaultMap
-  camera = new PerspectiveCamera(70, 1640 / 845, 1, 1000)
-  // camera = new PerspectiveCamera(60, innerWidth / innerHeight, 1, 1000)
+  // camera = new PerspectiveCamera(70, 1640 / 845, 1, 1000)
+  camera = new PerspectiveCamera(70, innerWidth / innerHeight, 1, 1000)
   camera.position.set(x, y, z)
 }
 
@@ -267,8 +269,8 @@ const resizeWindow = () => {
   window.addEventListener('resize', function () {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    // renderer.setSize( window.innerWidth, window.innerHeight);
-    renderer.setSize(1320, 900);
+    renderer.setSize( window.innerWidth, window.innerHeight);
+    // renderer.setSize(1320, 900);
   }, false);
 }
 
@@ -390,8 +392,9 @@ const init = async () => {
   setControls()
   // setGridHelper()
   setAmbientLight()
-  // resizeWindow()
+  resizeWindow()
   const gltf = await loadFile('/src/assets/scene.gltf')
+  
   // 将模型加入到场景中
   scene.add(gltf.scene)
   addMesh()
@@ -429,9 +432,10 @@ onBeforeUnmount(() => {
   height: 100%;
   position: relative;
   .basic-container {
-    height: 845px;
+    // height: 845px;
+    height: calc(100% - 10px);
     position: relative;
-    padding: 5px;
+    padding: 0;
     background: url('@/assets/bg.jpg') no-repeat;
     background-size: cover;
     background-position: bottom;
@@ -474,6 +478,7 @@ onBeforeUnmount(() => {
   bottom: 20px;
   left: 0;
   width: 100%;
+  user-select: none;
   > div:nth-child(1) {
     margin-left: 17px;
     margin-bottom: 20px;
