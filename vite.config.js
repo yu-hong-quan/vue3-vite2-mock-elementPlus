@@ -1,3 +1,10 @@
+/*
+ * @Descripttion: 
+ * @Author: 小余
+ * @Date: 2021-12-29 17:26:33
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2022-07-06 15:51:41
+ */
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
@@ -15,13 +22,20 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
 import viteCompression from 'vite-plugin-compression';
 
+// 资源预构建包插件，为了加快进入界面的速度
+import OptimizationPersist from 'vite-plugin-optimize-persist'
+import PkgConfig from 'vite-plugin-package-config'
+
+//引入 IE和旧版chrome兼容
+import legacyPlugin from '@vitejs/plugin-legacy'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/',
   build: {
-    outDir: 'buildProject', // 打包后文件包名称
-    chunkSizeWarningLimit: 500, //提高超大静态资源警告门槛
-    minify: 'terser',
+    outDir: 'dist', // 打包后文件包名称
+    chunkSizeWarningLimit: 1500, //提高超大静态资源警告门槛
+    minify: 'terser', //混淆器，terese构建后文件体积更小
     cssCodeSplit: false, // 如果设置为false，整个项目中的所有 CSS 将被提取到一个 CSS 文件中
     terserOptions: {
       compress: {
@@ -41,6 +55,14 @@ export default defineConfig({
           vue: ['vue', 'vue-router', 'vuex'],
           echarts: ['echarts'],
         },
+        // manualChunks (id) {
+        //   if (id.includes('node_modules')) {
+        //     return id.toString().split('node_modules/')[1].split('/')[0].toString();
+        //   }
+        // },
+        chunkFileNames: 'static/js/[name]-[hash].js',
+        entryFileNames: 'static/js/[name]-[hash].js',
+        assetFileNames: 'static/[ext]/[name]-[hash].[ext]'
       },
     },
     brotliSize: false,
@@ -48,22 +70,25 @@ export default defineConfig({
   server: {
     open: true,
     host: 'localhost',
+    hot: true,//开启热更新
     port: 3000,
     proxy: {
       //代理
       '/api': {
-        target: 'http://192.168.3.10:5000',
+        target: 'http://192.168.0.124:5000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
   // 定义别名
-  alias: {
-    // 如果报错提示 __dirname 找不到 则需要 yarn add @types/node --save-dev
-    '@': path.resolve(__dirname, 'src'),
-    'coms': path.resolve(__dirname, 'src/components'),
-    'utils': path.resolve(__dirname, 'src/utils')
+  resolve: {
+    alias: {
+      // 如果报错提示 __dirname 找不到 则需要 yarn add @types/node --save-dev
+      '@': path.resolve(__dirname, 'src'),
+      'coms': path.resolve(__dirname, 'src/components'),
+      'utils': path.resolve(__dirname, 'src/utils')
+    }
   },
   plugins: [
     vue(),
@@ -77,13 +102,20 @@ export default defineConfig({
     // 打包压缩，主要是本地gzip，如果服务器配置压缩也可以
     viteCompression({
       verbose: true,
-      disable: false,
+      disable: false,//开启压缩(不禁用),默认即可
       threshold: 10240,
-      algorithm: 'gzip',
-      ext: '.gz',
+      algorithm: 'gzip',//压缩算法
+      deleteOriginFile: false,//删除源文件
+      ext: '.gz',//文件类型
     }),
     viteMockServe({
-      supportTs: false, //如果使用 js发开，则需要配置 supportTs 为 false
+      supportTs: false, //如果使用 js开发，则需要配置 supportTs 为 false
     }),
+    PkgConfig(),
+    OptimizationPersist(),
+    legacyPlugin({
+      targets: ['chrome 52'], // 需要兼容的目标列表，可以设置多个
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime'] // 面向IE11时需要此插件
+    })
   ],
 });

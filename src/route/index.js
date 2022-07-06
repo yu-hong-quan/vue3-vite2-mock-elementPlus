@@ -1,3 +1,4 @@
+
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
@@ -50,27 +51,48 @@ const routes = [
             /* webpackChunkName: "picturEditor" */ '@/pages/home/picturEditor/index.vue'
           ),
       },
-
       {
-        path: '/tableDemo',
-        name: 'tableDemo',
+        path: '/3DExhibitionHall',
+        name: '3DExhibitionHall',
         meta: {
-          title: '封装表格组件',
+          title: '3D汽车展示厅',
         },
         component: () =>
           import(
-            /* webpackChunkName: "tableDemo" */ '@/pages/home/table/index.vue'
+            /* webpackChunkName: "3DExhibitionHall" */ '@/pages/home/3DExhibitionHall/index.vue'
           ),
       },
       {
-        path: '/form',
-        name: 'baseform',
+        path: '/markDown',
+        name: 'markDown',
         meta: {
-          title: '表单',
+          title: 'markDown富文本',
         },
         component: () =>
           import(
-            /* webpackChunkName: "baseform" */ '@/pages/home/baseForm/index.vue'
+            /* webpackChunkName: "markDown" */ '@/pages/home/markDown/index.vue'
+          ),
+      },
+      {
+        path: '/dragSort',
+        name: 'dragSort',
+        meta: {
+          title: '拖拽小Demo',
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "dragSort" */ '@/pages/home/dragSort/index.vue'
+          ),
+      },
+      {
+        path: '/draggable',
+        name: 'draggable',
+        meta: {
+          title: '基础拖拽示例',
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "draggable" */ '@/pages/home/draggable/index.vue'
           ),
       },
       {
@@ -95,15 +117,15 @@ const routes = [
           ),
       },
       {
-        path: '/upload',
-        name: 'upload',
+        path: '/customEditing',
+        name: 'customEditing',
         meta: {
-          title: '上传插件',
+          title: '自定义编辑页面',
           permission: true,
         },
         component: () =>
           import(
-            /* webpackChunkName: "upload" */ '@/pages/home/upload/index.vue'
+            /* webpackChunkName: "customEditing" */ '@/pages/home/customEditing/index.vue'
           ),
       },
       {
@@ -136,7 +158,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = `${to.meta.title} | 内卷小屋`;
+  document.title = `${to.meta.title} | 内卷吧`;
   const role = localStorage.getItem('ms_username');
   if (!role && to.path !== '/login') {
     next('/login');

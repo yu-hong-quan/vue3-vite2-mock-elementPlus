@@ -2,7 +2,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 const devBaseUrl = 'http://localhost:3000'; //测试
-const proBaseUrl = 'http://192.168.3.10:5000'; //正式
+const proBaseUrl = 'http://192.168.0.124:5000'; //正式
 let url;
 import.meta.env.MODE === 'development'
   ? (url = devBaseUrl)

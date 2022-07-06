@@ -146,7 +146,7 @@ watch(
       transition: all 0.3s ease-in;
       .tags-li-title {
         float: left;
-        max-width: 80px;
+        max-width: 100px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;

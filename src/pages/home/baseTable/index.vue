@@ -168,7 +168,6 @@
 </template>
 
 <script setup name="baseTable">
-import BasicContainer from "coms/vpro-materials/basic-container"
 import ComDialog from "coms/common/ComDialog/index.vue"
 import { Delete, Search, Plus } from "@element-plus/icons-vue";
 import hooks from "@/hooks/index"; // 引入自定义hooks

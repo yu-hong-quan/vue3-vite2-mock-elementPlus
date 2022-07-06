@@ -8,6 +8,11 @@ import * as Incons from '@ant-design/icons-vue'; // 导入图标库
 import * as echarts from 'echarts'; // 引入图表库
 import i18n from '@/language';// 引入配置好的国际化语言插件
 
+import VMdEditor from '@kangc/v-md-editor';
+import '@kangc/v-md-editor/lib/style/base-editor.css';
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
+import '@kangc/v-md-editor/lib/theme/style/github.css';
+VMdEditor.use(githubTheme);
 
 /**
  * 警告⚠：[Violation] Added non-passive event listener to a scroll-blocking 'mousewheel' event. Consider marking event handler as 'passive' to make the page more responsive.
@@ -19,6 +24,7 @@ const app = createApp(App);
 app.use(router);
 app.use(store);
 app.use(i18n);
+app.use(VMdEditor);
 
 app.mount('#app');
 // Vue3注册全局属性
