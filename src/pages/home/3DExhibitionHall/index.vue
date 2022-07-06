@@ -11,23 +11,52 @@
         </div>
       </div>
       <div class="mask">
-        <div style="margin-left: 20px">
+        <div>
           <p style="margin-bottom: 10px">
             三维坐标点信息： x : {{ x }} , y : {{ y }} , z : {{ z }}
           </p>
           <el-button type="primary" @click="isAutoFun"> > 转动车</el-button>
           <el-button type="primary" @click="stop"> > 停止</el-button>
-          <el-button type="primary" @click="action"> > 查看内饰</el-button>
+          <el-button
+            type="primary"
+            @click="isAction ? action() : brackAction()"
+          >
+            > {{ isAction ? '查看内饰' : '返回第三视角' }}</el-button
+          >
         </div>
-        <div class="flex">
-          <div
-            @click="setCarColor(index)"
-            v-for="(item, index) in colorAry"
-            :style="{ backgroundColor: item }"
-            :key="index"
-          ></div>
-        </div>
+        <el-button
+          type="primary"
+          style="margin-left: 16px"
+          @click="drawer = true"
+        >
+          > 车辆自定义
+        </el-button>
       </div>
+      <el-drawer v-model="drawer" :direction="direction">
+        <template #title>
+          <h4>车辆自定义</h4>
+        </template>
+        <template #default>
+          <el-divider content-position="left">车身颜色</el-divider>
+          <div class="flex">
+            <div
+              @click="setCarColor(index)"
+              v-for="(item, index) in colorAry"
+              :style="{ backgroundColor: item }"
+              :key="index"
+            ></div>
+          </div>
+          <el-divider content-position="left">轮毂颜色</el-divider>
+          <div class="flex">
+            <div
+              @click="setCarColor(index)"
+              v-for="(item, index) in colorAry"
+              :style="{ backgroundColor: item }"
+              :key="index"
+            ></div>
+          </div>
+        </template>
+      </el-drawer>
     </BasicContainer>
   </div>
 </template>
@@ -73,9 +102,9 @@ const colorAry = [
   "rgb(0, 0, 0)", "rgb(255,255,255)"] // 车身颜色数组 
 const loader = new GLTFLoader() //引入模型的loader实例
 const defaultMap = {
-  x: 510,
-  y: 128,
-  z: 0,
+  x: -388,
+  y: 61,
+  z: -20,
 }// 相机的默认坐标
 const map = reactive(defaultMap)//把相机坐标设置成可观察对象
 const { x, y, z } = toRefs(map)//输出坐标给模板使用
@@ -86,6 +115,22 @@ let composer = ref(null)
 let outlinePass = ref(null)
 let renderPass = ref(null)
 let meshArr = toRefs([])
+let isAction = ref(true)
+const drawer = ref(false)
+const direction = ref('rtl')
+
+const cancelClick = () => {
+  drawer.value = false
+}
+const confirmClick = () => {
+  ElMessageBox.confirm(`Are you confirm to chose  ?`)
+    .then(() => {
+      drawer.value = false
+    })
+    .catch(() => {
+      // catch error
+    })
+}
 
 //创建灯光
 const setLight = () => {
@@ -102,8 +147,9 @@ const setLight = () => {
 // 创建场景
 const setScene = () => {
   scene = new Scene()
-  renderer = new WebGLRenderer({   //开启抗锯齿 卡顿，暂时关闭
-    antialias: false
+  renderer = new WebGLRenderer({
+    antialias: false, //开启抗锯齿 卡顿，暂时关闭
+    alpha: true, //开启背景透明
   });
   console.log(innerWidth, innerHeight);
   // renderer.setSize(innerWidth, innerHeight)
@@ -112,10 +158,12 @@ const setScene = () => {
 }
 
 // 创建相机【远景相机，与人眼观察类似，近大远小】
-// param1:视角【视角越大  物体渲染到屏幕时则看着越小，反之越大】
-// param2:相机拍摄面的长宽比
-// param3:近裁剪面
-// param4:远裁剪面
+/**
+ * param1:视角【视角越大  物体渲染到屏幕时则看着越小，反之越大】
+    param2:相机拍摄面的长宽比
+    param3:近裁剪面
+    param4:远裁剪面
+ */
 const setCamera = () => {
   const { x, y, z } = defaultMap
   camera = new PerspectiveCamera(70, 1640 / 845, 1, 1000)
@@ -126,8 +174,12 @@ const setCamera = () => {
 // 设置模型控制 == 视图控制器
 const setControls = () => {
   controls = new OrbitControls(camera, renderer.domElement)
+  // 相机垂直方向移动的弧度，默认从顶部九十度到底部九十度 默认值是0和Math.PI
   controls.maxPolarAngle = 0.9 * Math.PI / 2
+  // 设置控制器是否缩放以及缩放速度
   controls.enableZoom = true
+  // 是否开启键盘控制
+  controls.enableKeys = true;
   controls.addEventListener('change', render)
 }
 
@@ -145,6 +197,7 @@ const loop = () => {
   requestAnimationFrame(loop)
   TWEEN.update()
   renderer.render(scene, camera)
+
   // if (composer) {
   //   composer.render()
   // }
@@ -203,7 +256,7 @@ const loadFile = (url) => {
 * colorGrid    网格其他线颜色
 */
 const setGridHelper = () => {
-  var gridHelper = new GridHelper(800, 30, 'red', 'gray');
+  var gridHelper = new GridHelper(1360, 50, 'red', 'gray');
   gridHelper.position.y = -100;
   gridHelper.position.x = 0;
   scene.add(gridHelper);
@@ -247,10 +300,12 @@ const addMesh = () => {
     scene.add(mesh);
     meshArr.push(mesh)
   }
-  for (let j = 0; j < meshArr.length; j++) {
-    const item = meshArr[j];
-    outlineObj([item])
-  }
+
+  // 物体高亮发光
+  // for (let j = 0; j < meshArr.length; j++) {
+  //   const item = meshArr[j];
+  //   outlineObj([item])
+  // }
 }
 
 //高亮显示模型（呼吸灯）
@@ -284,38 +339,43 @@ const outlineObj = (selectedObjects) => {
 }
 
 const setAmbientLight = () => {
-  let ambient = new Three.AmbientLight(0xFFFFFF)
+  let ambient = new AmbientLight(0x444444)
   ambient.name = '环境光'
   scene.add(ambient)
 }
 
 const action = () => {
-  var tweena = cameraCon({ x: 0, y: 9, z: -60 }, 4000)//{ x: -70, y: 24, z: 3 }
-  var tweenb = cameraCon({ x: -1, y: 1, z: 8 }, 4000)
-  //var tweenc = this.cameraCon({ x: -20, y: 100, z: 100 }, 9000)
-  //var tweend = this.cameraCon({ x: 0, y: 50, z: 200 }, 4000)
-
+  // 暂停车身旋转
+  stop()
+  console.log(x, y, z);
+  let tweena = cameraCon({ x: 0, y: 9, z: -60 }, 4000)
+  let tweenb = cameraCon({ x: 0, y: 1, z: 8 }, 4000)
+  isAction.value = false;
   // 链式补间：tween.chain
   // 如果有多组补间动画，想要a组动画结束后立即启动b组动画，则需要使用tweena.chain(tweenb)
   // tweena.chain(tweenb)
 
-  //tweenb.chain(tweenc)
-  //tweenc.chain(tweend)
-  // tweend.chain(tweena)
-
   // tweena.start()
   tweenb.start()
+
 }
+
+const brackAction = () => {
+  let tweenc = cameraCon({ x: 3, y: 66, z: -422 }, 4000)
+  isAction.value = true;
+  tweenc.start()
+}
+
 const cameraCon = (p2, time) => {
-  let p1 = { x: 3, y: 66, z: -422 };//动画预开始 相机初始位置
-  var tween1 = new TWEEN.Tween(p1).to(p2, time).easing(TWEEN.Easing.Quadratic.InOut)
-  tween1.onUpdate(() => {
+  let p1 = { x: x.value, y: y.value, z: z.value };//动画预开始 相机初始位置
+  let tween = new TWEEN.Tween(p1).to(p2, time).easing(TWEEN.Easing.Quadratic.InOut)
+  tween.onUpdate(() => {
     camera.position.set(p1.x, p1.y, p1.z)
     camera.lookAt(0, 0, 0)
-    // this.controls.target.set(0, 0, 0) // 确保镜头移动后，视觉中心还在圆点处
-    // this.controls.update()
+    controls.target.set(0, 0, 0) // 确保镜头移动后，视觉中心还在圆点处
+    controls.update()
   })
-  return tween1
+  return tween
 }
 
 const onDocumentMouseDown = () => {
@@ -328,8 +388,8 @@ const init = async () => {
   setCamera()
   setLight()
   setControls()
-  setGridHelper()
-  // setAmbientLight()
+  // setGridHelper()
+  setAmbientLight()
   // resizeWindow()
   const gltf = await loadFile('/src/assets/scene.gltf')
   // 将模型加入到场景中
@@ -372,6 +432,9 @@ onBeforeUnmount(() => {
     height: 845px;
     position: relative;
     padding: 5px;
+    background: url('@/assets/bg.jpg') no-repeat;
+    background-size: cover;
+    background-position: bottom;
   }
 }
 .maskLoading {
@@ -408,21 +471,33 @@ onBeforeUnmount(() => {
 .mask {
   color: #fff;
   position: absolute;
-  bottom: 0;
+  bottom: 20px;
   left: 0;
   width: 100%;
+  > div:nth-child(1) {
+    margin-left: 17px;
+    margin-bottom: 20px;
+  }
 }
 
 .flex {
   display: flex;
   flex-wrap: wrap;
-  padding: 20px;
+  // padding: 20px;
 }
 
 .flex div {
-  width: 10px;
-  height: 10px;
+  width: 15px;
+  height: 15px;
   margin: 5px;
   cursor: pointer;
+  border: 1px solid #eee;
+}
+
+:deep(.el-overlay) {
+  position: absolute;
+}
+:deep(.el-drawer__header) {
+  margin-bottom: 0;
 }
 </style>
