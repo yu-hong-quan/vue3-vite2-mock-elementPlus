@@ -154,7 +154,7 @@ const submitForm = () => {
     }
   }
 }
-/deep/ .el-button {
+:deep(.el-button) {
   height: 30px;
 }
 </style>
