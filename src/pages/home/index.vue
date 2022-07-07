@@ -30,14 +30,10 @@ const collapse = computed(() => layout.collapse);
   </div>
 </template>
 
+
 <style lang="less" scoped>
 @import '@/styles/common.less';
 .about {
   width: 100%;
-  height: 100%;
-}
-.content-box,
-.about {
-  background: @drawerBackgroundColor;
 }
 </style>
