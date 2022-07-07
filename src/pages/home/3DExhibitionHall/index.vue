@@ -21,7 +21,7 @@
             type="primary"
             @click="isAction ? action() : brackAction()"
           >
-            > {{ isAction ? '查看内饰' : '返回第三视角' }}</el-button
+            > {{ isAction ? '车内视角' : '车外视角' }}</el-button
           >
         </div>
         <el-button
@@ -55,6 +55,11 @@
               :key="index"
             ></div>
           </div>
+          <el-divider content-position="left">更换车辆</el-divider>
+          <el-radio-group v-model="radio" class="ml-4" @change="selectModl">
+            <el-radio label="1" size="large">特斯拉 Model3</el-radio>
+            <el-radio label="2" size="large">五菱宏光mini</el-radio>
+          </el-radio-group>
         </template>
       </el-drawer>
     </BasicContainer>
@@ -64,27 +69,28 @@
 <script setup name="exhibitionHall">
 import BasicContainer from "coms/vpro-materials/basic-container"
 import { onMounted, reactive, ref, toRefs, onBeforeUnmount } from 'vue'
-import {
-  Color,
-  DirectionalLight,
-  DirectionalLightHelper,
-  HemisphereLight,
-  HemisphereLightHelper,
-  PerspectiveCamera,
-  Scene,
-  WebGLRenderer,
-  GridHelper,
-  AmbientLight,
-  Vector3,
-  Box3,
-  BoxGeometry,//正方体
-  SphereGeometry,//球体
-  MeshLambertMaterial,//哑光材质
-  MeshBasicMaterial,
-  Mesh,
-  Vector2,
-  Raycaster
-} from 'three'
+// import {
+//   Color,
+//   DirectionalLight,
+//   DirectionalLightHelper,
+//   HemisphereLight,
+//   HemisphereLightHelper,
+//   PerspectiveCamera,
+//   Scene,
+//   WebGLRenderer,
+//   GridHelper,
+//   AmbientLight,
+//   Vector3,
+//   Box3,
+//   BoxGeometry,//正方体
+//   SphereGeometry,//球体
+//   MeshLambertMaterial,//哑光材质
+//   MeshBasicMaterial,
+//   Mesh,
+//   Vector2,
+//   Raycaster
+// } from 'three'
+import * as THREE from "three"
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js' //效果组合器
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js' //在指定的场景和相机的基础上渲染出一个新场景
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js' //物体边界线条
@@ -92,6 +98,7 @@ import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js' //�
 import { FXAAShader } from "three/examples/jsm/shaders/FXAAShader.js" //着色器主要功能是解决锯齿问题
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 import TWEEN from '@tweenjs/tween.js'
 import Stats from 'three/examples/jsm/libs/stats.module.js' //性能检测插件（stats.js）监测页面性能
 
@@ -102,7 +109,6 @@ const colorAry = [
   "rgb(216, 27, 67)", "rgb(142, 36, 170)", "rgb(81, 45, 168)", "rgb(48, 63, 159)", "rgb(30, 136, 229)", "rgb(0, 137, 123)",
   "rgb(67, 160, 71)", "rgb(251, 192, 45)", "rgb(245, 124, 0)", "rgb(230, 74, 25)", "rgb(233, 30, 78)", "rgb(156, 39, 176)",
   "rgb(0, 0, 0)", "rgb(255,255,255)"] // 车身颜色数组 
-const loader = new GLTFLoader() //引入模型的loader实例
 const defaultMap = {
   x: -388,
   y: 61,
@@ -118,9 +124,13 @@ let outlinePass = ref(null)
 let renderPass = ref(null)
 let meshArr = toRefs([])
 let isAction = ref(true)
+let radio = ref('1')
 const drawer = ref(false)
 const direction = ref('rtl')
+let modUrl = ref('/src/assets/scene.gltf')
+let gltfMod = ref(null)
 
+// 关闭侧边栏
 const cancelClick = () => {
   drawer.value = false
 }
@@ -136,26 +146,31 @@ const confirmClick = () => {
 
 //创建灯光
 const setLight = () => {
-  directionalLight = new DirectionalLight(0xffffff, 0.5)
+  directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
   directionalLight.position.set(0, 8, 4)
-  dhelper = new DirectionalLightHelper(directionalLight, 5, 0xff0000)
-  hemisphereLight = new HemisphereLight(0xffffff, 0xffffff, 0.4)
+  dhelper = new THREE.DirectionalLightHelper(directionalLight, 5, 0xff0000)
+  hemisphereLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.4)
   hemisphereLight.position.set(4, 8, 0)
-  hHelper = new HemisphereLightHelper(hemisphereLight, 5)
+  hHelper = new THREE.HemisphereLightHelper(hemisphereLight, 5)
   scene.add(directionalLight)
   scene.add(hemisphereLight)
 }
 
 // 创建场景
 const setScene = () => {
-  scene = new Scene()
-  renderer = new WebGLRenderer({
-    antialias: true, //开启抗锯齿 卡顿，暂时关闭
+  scene = new THREE.Scene()
+  renderer = new THREE.WebGLRenderer({
+    antialias: false, //开启抗锯齿 卡顿，暂时关闭
     alpha: true, //开启背景透明
   });
-  console.log(innerWidth, innerHeight);
   renderer.setSize(innerWidth, innerHeight)
-  // renderer.setSize(1640, 845)
+  renderer.setPixelRatio(window.devicePixelRatio) // 设置显示比例 
+  renderer.setClearColor(0x333334, 1) // 设置背景颜色
+  // 在导入材质时，会默认将贴图编码格式定义为Three.LinearEncoding，
+  // 故需将带颜色信息的贴图手动指定为Three.sRGBEncoding
+  renderer.outputEncoding = THREE.sRGBEncoding // 输出到屏幕 使用颜色贴图--上皮肤
+  renderer.toneMapping = THREE.ACESFilmicToneMapping
+  renderer.toneMappingExposure = 1
   document.querySelector('.basic-container').appendChild(renderer.domElement)
 }
 
@@ -168,8 +183,7 @@ const setScene = () => {
  */
 const setCamera = () => {
   const { x, y, z } = defaultMap
-  // camera = new PerspectiveCamera(70, 1640 / 845, 1, 1000)
-  camera = new PerspectiveCamera(70, innerWidth / innerHeight, 1, 1000)
+  camera = new THREE.PerspectiveCamera(70, innerWidth / innerHeight, 1, 2000)
   camera.position.set(x, y, z)
 }
 
@@ -216,7 +230,7 @@ const stop = () => {
 
 //设置车身颜色
 const setCarColor = (index) => {
-  const currentColor = new Color(colorAry[index])
+  const currentColor = new THREE.Color(colorAry[index])
   scene.traverse(child => {
     if (child.isMesh) {
       console.log(child.name)
@@ -227,29 +241,6 @@ const setCarColor = (index) => {
   })
 }
 
-// 加载模型
-const loadFile = (url) => {
-  return new Promise(((resolve, reject) => {
-    loader.load(url,
-      (gltf) => {
-        resolve(gltf)
-      }, ({ loaded, total }) => {
-        let load = Math.abs(loaded / total * 100)
-        loadingWidth.value = load
-        if (load >= 100) {
-          setTimeout(() => {
-            isLoading.value = false
-          }, 1000)
-        }
-        console.log((loaded / total * 100) + '% loaded')
-      },
-      (err) => {
-        reject(err)
-      }
-    )
-  }))
-}
-
 // 添加地面网格GIRDHELPER
 /**
 * size 网格总边长
@@ -258,7 +249,7 @@ const loadFile = (url) => {
 * colorGrid    网格其他线颜色
 */
 const setGridHelper = () => {
-  var gridHelper = new GridHelper(1360, 50, 'red', 'gray');
+  var gridHelper = new THREE.GridHelper(1360, 20, 'red', 'gray');
   gridHelper.position.y = -100;
   gridHelper.position.x = 0;
   scene.add(gridHelper);
@@ -269,14 +260,13 @@ const resizeWindow = () => {
   window.addEventListener('resize', function () {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize( window.innerWidth, window.innerHeight);
-    // renderer.setSize(1320, 900);
+    renderer.setSize(window.innerWidth, window.innerHeight);
   }, false);
 }
 
 // 添加圆体
 const addMesh = () => {
-  let geometry = new SphereGeometry(7, 20, 20);//盒子模型
+  let geometry = new THREE.SphereGeometry(7, 20, 20);//盒子模型
   let coordinate = [
     { x: -121, y: 17, z: -5 },//驾驶座车门点
     { x: 121, y: 17, z: -5 },//副驾驶车门点
@@ -287,12 +277,12 @@ const addMesh = () => {
   ]
   for (let i = 0; i < coordinate.length; i++) {
     const item = coordinate[i];
-    let material = new MeshLambertMaterial({
+    let material = new THREE.MeshLambertMaterial({
       color: 'rgba(255,255,255)',
       transparent: true,//是否开启透明
       opacity: 0.5//透明度
     });//材料
-    let mesh = new Mesh(geometry, material);
+    let mesh = new THREE.Mesh(geometry, material);
     mesh.position.x = item.x;
     mesh.position.y = item.y;
     mesh.position.z = item.z;
@@ -302,7 +292,7 @@ const addMesh = () => {
     scene.add(mesh);
     meshArr.push(mesh)
   }
-
+  // outlineObj([meshArr[0]])
   // 物体高亮发光
   // for (let j = 0; j < meshArr.length; j++) {
   //   const item = meshArr[j];
@@ -310,7 +300,7 @@ const addMesh = () => {
   // }
 }
 
-//高亮显示模型（呼吸灯）
+// 高亮显示模型（呼吸灯）
 const outlineObj = (selectedObjects) => {
   // 创建一个EffectComposer（效果组合器）对象，然后在该对象上添加后期处理通道。
   composer = new EffectComposer(renderer)
@@ -320,7 +310,7 @@ const outlineObj = (selectedObjects) => {
   composer.addPass(renderPass)
 
   // 物体边缘发光通道
-  outlinePass = new OutlinePass(new Vector2(100, 100), scene, camera)
+  outlinePass = new OutlinePass(new THREE.Vector2(100, 100), scene, camera)
   outlinePass.selectedObjects = selectedObjects
   outlinePass.edgeStrength = 20.0 // 边框的亮度
   outlinePass.edgeGlow = 1 // 光晕[0,1]
@@ -329,7 +319,7 @@ const outlineObj = (selectedObjects) => {
   outlinePass.downSampleRatio = 2 // 边框弯曲度
   outlinePass.pulsePeriod = 5 // 呼吸闪烁的速度
   outlinePass.visibleEdgeColor.set(parseInt(0xffffff)) // 呼吸显示的颜色
-  outlinePass.hiddenEdgeColor = new Color(0, 0, 0) // 呼吸消失的颜色
+  outlinePass.hiddenEdgeColor = new THREE.Color(0, 0, 0) // 呼吸消失的颜色
   outlinePass.clear = true
   composer.addPass(outlinePass)
 
@@ -340,12 +330,14 @@ const outlineObj = (selectedObjects) => {
   composer.addPass(effectFXAA)
 }
 
+// 环境光---阳光普照，自然光
 const setAmbientLight = () => {
-  let ambient = new AmbientLight(0x444444)
+  let ambient = new THREE.AmbientLight(0x444444)
   ambient.name = '环境光'
   scene.add(ambient)
 }
 
+// 查看车内饰
 const action = () => {
   // 暂停车身旋转
   stop()
@@ -359,15 +351,16 @@ const action = () => {
 
   // tweena.start()
   tweenb.start()
-
 }
 
+// 查看车外饰
 const brackAction = () => {
   let tweenc = cameraCon({ x: 3, y: 66, z: -422 }, 4000)
   isAction.value = true;
   tweenc.start()
 }
 
+// 动画
 const cameraCon = (p2, time) => {
   let p1 = { x: x.value, y: y.value, z: z.value };//动画预开始 相机初始位置
   let tween = new TWEEN.Tween(p1).to(p2, time).easing(TWEEN.Easing.Quadratic.InOut)
@@ -380,8 +373,88 @@ const cameraCon = (p2, time) => {
   return tween
 }
 
+// 更换车辆
+const selectModl = () => {
+  console.log(radio.value);
+  if (radio.value == '1') {
+    modUrl.value = '/src/assets/scene.gltf'
+  } else {
+    modUrl.value = '/src/assets/car.glb'
+  }
+  isLoading.value = true;
+  console.log(gltfMod);
+  // 删除原有模型
+  clearScene(scene)
+  loadingWidth.value = 0;
+  drawer.value = false;
+  load3D();
+}
+
+/**
+ * 清除模型，模型中有 group 和 scene,需要进行判断
+ * @param scene
+ * @returns
+ */
+const clearScene = (myObjects) => {
+  console.log(myObjects);
+  // 从scene中删除模型并释放内存
+  if (myObjects.length > 0) {
+    for (var i = 0; i < myObjects.length; i++) {
+      var currObj = myObjects[i];
+      console.log(currObj);
+      // 判断类型
+      if (currObj instanceof THREE.Scene) {
+        var children = currObj.children;
+        for (var i = 0; i < children.length; i++) {
+          deleteGroup(children[i]);
+        }
+      } else {
+        deleteGroup(currObj);
+      }
+      scene.remove(currObj);
+    }
+  }
+}
+
+// 删除group，释放内存
+const deleteGroup = (group) => {
+  //console.log(group);
+  if (!group) return;
+  // 删除掉所有的模型组内的mesh
+  group.traverse(function (item) {
+    if (item instanceof THREE.Mesh) {
+      item.geometry.dispose(); // 删除几何体
+      item.material.dispose(); // 删除材质
+    }
+  });
+}
+
 const onDocumentMouseDown = () => {
 
+}
+
+const load3D = () => {
+  const loader = new GLTFLoader()
+  const dracoLoader = new DRACOLoader()
+  dracoLoader.setDecoderPath('/node_modules/three/examples/js/libs/draco/')
+  dracoLoader.preload()
+  loader.setDRACOLoader(dracoLoader)
+  loader.load(modUrl.value, (gltf) => {
+    gltfMod.value = gltf.scene
+    scene.add(gltf.scene)
+    renderer.render(scene, camera)
+  }, (xhr) => {
+    let load = (xhr.loaded / xhr.total) * 100
+    loadingWidth.value = load
+    console.log(load + '% loaded')
+    if (load >= 100) {
+      setTimeout(() => {
+        isLoading.value = false
+      }, 1000)
+    }
+  }, (error) => {
+    console.error(error)
+  })
 }
 
 //初始化所有函数
@@ -390,14 +463,11 @@ const init = async () => {
   setCamera()
   setLight()
   setControls()
-  // setGridHelper()
+  setGridHelper()
   setAmbientLight()
-  resizeWindow()
-  const gltf = await loadFile('/src/assets/scene.gltf')
-  
-  // 将模型加入到场景中
-  scene.add(gltf.scene)
+  load3D()//加载模型，并将模型加入到场景中
   addMesh()
+  resizeWindow()
   loop()
 }
 
@@ -436,13 +506,14 @@ onBeforeUnmount(() => {
     height: calc(100% - 10px);
     position: relative;
     padding: 0;
-    background: url('@/assets/bg.jpg') no-repeat;
+    background: #333334;
+    // background: url('@/assets/bg.jpg') no-repeat;
     background-size: cover;
     background-position: bottom;
   }
 }
 .maskLoading {
-  background: #000;
+  background: #333334;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -459,7 +530,7 @@ onBeforeUnmount(() => {
   width: 400px;
   height: 20px;
   border: 1px solid #fff;
-  background: #000;
+  background: #333334;
   overflow: hidden;
   border-radius: 10px;
 }
