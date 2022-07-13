@@ -3,7 +3,7 @@
  * @Author: 小余
  * @Date: 2021-12-29 17:26:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-07-06 15:51:41
+ * @LastEditTime: 2022-07-11 17:51:59
  */
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -50,6 +50,10 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/img/[name]-[hash].[jpg,png]',
+        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
         manualChunks: {
           // 拆分代码，这个就是分包，配置完后自动按需加载，现在还比不上webpack的splitchunk，不过也能用了。
           vue: ['vue', 'vue-router', 'vuex'],
@@ -60,9 +64,6 @@ export default defineConfig({
         //     return id.toString().split('node_modules/')[1].split('/')[0].toString();
         //   }
         // },
-        chunkFileNames: 'static/js/[name]-[hash].js',
-        entryFileNames: 'static/js/[name]-[hash].js',
-        assetFileNames: 'static/[ext]/[name]-[hash].[ext]'
       },
     },
     brotliSize: false,
