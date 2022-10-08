@@ -433,6 +433,7 @@ const onDocumentMouseDown = () => {
 
 }
 
+//加载模型，并将模型加入到场景中
 const load3D = () => {
   const loader = new GLTFLoader()
   const dracoLoader = new DRACOLoader()
@@ -450,7 +451,7 @@ const load3D = () => {
     if (load >= 100) {
       setTimeout(() => {
         isLoading.value = false
-      }, 1000)
+      }, 500)
     }
   }, (error) => {
     console.error(error)
@@ -465,7 +466,7 @@ const init = async () => {
   setControls()
   setGridHelper()
   setAmbientLight()
-  load3D()//加载模型，并将模型加入到场景中
+  load3D()
   addMesh()
   resizeWindow()
   loop()

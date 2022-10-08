@@ -3,7 +3,7 @@
  * @Author: 小余
  * @Date: 2021-12-29 17:26:33
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2022-07-06 16:14:02
+ * @LastEditTime: 2022-07-22 10:40:42
  */
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -29,7 +29,7 @@ import PkgConfig from 'vite-plugin-package-config'
 //引入 IE和旧版chrome兼容
 import legacyPlugin from '@vitejs/plugin-legacy'
 
-// https://vitejs.dev/config/
+// https://vitejs.dev/config/ 
 export default defineConfig({
   base: '/',
   build: {
@@ -50,19 +50,19 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        manualChunks: {
-          // 拆分代码，这个就是分包，配置完后自动按需加载，现在还比不上webpack的splitchunk，不过也能用了。
-          vue: ['vue', 'vue-router', 'vuex'],
-          echarts: ['echarts'],
-        },
-        // manualChunks (id) {
-        //   if (id.includes('node_modules')) {
-        //     return id.toString().split('node_modules/')[1].split('/')[0].toString();
-        //   }
+        chunkFileNames: 'assets/static/js/[name]-[hash].js',
+        entryFileNames: 'assets/static/js/[name]-[hash].js',
+        assetFileNames: 'assets/static/[ext]/[name]-[hash].[ext]',
+        // manualChunks: {
+        //   // 拆分代码，这个就是分包，配置完后自动按需加载，现在还比不上webpack的splitchunk，不过也能用了。
+        //   vue: ['vue', 'vue-router', 'vuex'],
+        //   echarts: ['echarts'],
         // },
-        chunkFileNames: 'static/js/[name]-[hash].js',
-        entryFileNames: 'static/js/[name]-[hash].js',
-        assetFileNames: 'static/[ext]/[name]-[hash].[ext]'
+        manualChunks (id) {
+          if (id.includes('node_modules')) {
+            return id.toString().split('node_modules/')[1].split('/')[0].toString();
+          }
+        },
       },
     },
     brotliSize: false,
