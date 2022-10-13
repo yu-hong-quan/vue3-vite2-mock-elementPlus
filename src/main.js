@@ -1,3 +1,7 @@
+/*
+ * @Author: XiaoYu
+ * @Date: 2021-12-29 17:26:33
+ */
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from '@/route/index';

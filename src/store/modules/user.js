@@ -15,7 +15,7 @@ export default {
         asyncGetUserInfo({commit},value){
             setTimeout(()=>{
                 commit('getUserInfo',value)
-            },2000)
+            },1000)
         }
     },
     getters:{
