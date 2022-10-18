@@ -146,7 +146,6 @@ const changeSetting = (type, value) => {
 }
 
 const changeTags = (value) => {
-  console.log(value)
   $store.commit("layout/isTageBartShow", value);
 }
 

@@ -208,6 +208,7 @@ onMounted(() => {
     align-items: center;
     float: left;
     cursor: pointer;
+    margin:0 8px 0 8px;
   }
   .logo {
     float: left;

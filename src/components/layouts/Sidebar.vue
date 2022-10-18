@@ -105,4 +105,8 @@ onMounted(() => {
 .sidebar-el-menu:not(.el-menu--collapse) {
   width: 251px;
 }
+
+.el-menu--collapse .el-menu-item.is-active i{
+  color: #fff !important;
+}
 </style>
