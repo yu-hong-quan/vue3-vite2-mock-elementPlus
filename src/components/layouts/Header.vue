@@ -2,47 +2,30 @@
   <div class="header">
     <!-- 折叠按钮 -->
     <div class="collapse-btn" @click="collapseChage">
-      <el-icon v-if="!collapse"><Fold /></el-icon>
-      <el-icon v-else><Expand /></el-icon>
+      <el-icon v-if="!collapse">
+        <Fold />
+      </el-icon>
+      <el-icon v-else>
+        <Expand />
+      </el-icon>
     </div>
     <div class="logo">{{ $t('PageTitle') }}</div>
 
     <div class="header-right">
       <div class="header-user-con">
         <!-- 全屏 -->
-        <el-tooltip
-          class="item"
-          effect="dark"
-          :content="data.fullscreen ? '退出全屏' : '全屏'"
-          placement="bottom"
-        >
-          <img
-            class="suofangImg"
-            :src="
-              data.fullscreen
-                ? '@/assets/quxiaoquanpin.png'
-                : '@/src/assets/qunap.png'
-            "
-            alt=""
-            @click="handleFullScreen"
-          />
+        <el-tooltip class="item" effect="dark" :content="data.fullscreen ? '退出全屏' : '全屏'" placement="bottom">
+          <img class="suofangImg" :src="showAllPing" alt="" @click="handleFullScreen" />
         </el-tooltip>
         <!-- 中英文切换 -->
-        <img
-          :src="i18nImg"
-          alt=""
-          class="i18nImg"
-          @click="selecti18n('click')"
-        />
+        <img :src="i18nImg" alt="" class="i18nImg" @click="selecti18n('click')" />
         <!-- 消息中心 -->
         <div class="btn-bell">
-          <el-tooltip
-            effect="dark"
-            :content="message ? `有${message}条未读消息` : `消息中心`"
-            placement="bottom"
-          >
+          <el-tooltip effect="dark" :content="message ? `有${message}条未读消息` : `消息中心`" placement="bottom">
             <router-link to="/tabs">
-              <el-icon><Bell /></el-icon>
+              <el-icon>
+                <Bell />
+              </el-icon>
             </router-link>
           </el-tooltip>
           <span class="btn-bell-badge" v-if="message"></span>
@@ -61,16 +44,13 @@
           </span>
           <template #dropdown>
             <el-dropdown-menu>
-              <a
-                href="https://github.com/15017872695/vue3-vite2-mock-elementPlus"
-                target="_blank"
-              >
+              <a href="https://github.com/15017872695/vue3-vite2-mock-elementPlus" target="_blank">
                 <el-dropdown-item>{{
-                  $t('ProjectWarehouse')
+                    $t('ProjectWarehouse')
                 }}</el-dropdown-item>
               </a>
               <el-dropdown-item divided command="loginout">{{
-                $t('LogOut')
+                  $t('LogOut')
               }}</el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -83,10 +63,7 @@
     </div>
 
     <!-- 系统设置右侧抽屉组件 -->
-    <HeaderDrawer
-      :isSetting="data.isShowSetting"
-      @isParentDrawer="isChildrenDrawer"
-    ></HeaderDrawer>
+    <HeaderDrawer :isSetting="data.isShowSetting" @isParentDrawer="isChildrenDrawer"></HeaderDrawer>
   </div>
 </template>
 
@@ -100,6 +77,8 @@ import hooks from "@/hooks/index"; // 引入自定义hooks
 // 对自定义hooks进行解构获取内部实例方法
 let { changeFullScreen, listenerEvent, showMessageText, showMessageBox } = hooks();
 const { proxy: self } = getCurrentInstance();
+
+let showAllPing = ref(`../../../src/assets/qunap.png`)
 
 const $store = useStore();
 const router = useRouter();
@@ -119,6 +98,11 @@ const data = reactive({
 })
 listenerEvent(() => {
   data.fullscreen = !data.fullscreen
+  if(data.fullscreen){
+    showAllPing.value = `../../../src/assets/quxiaoquanpin.png`
+  }else{
+    showAllPing.value = `../../../src/assets/qunap.png`
+  }
 }, data)
 
 // 全屏切换
@@ -132,14 +116,14 @@ const reload = inject('reload');
 const selecti18n = () => {
   showMessageBox("温馨提示", "warning", "是否确认切换语言?", true, true, 1, () => {
     if (i18nBln.value) {
-      i18nImg.value = '@/assets/zh.png'
+      i18nImg.value = '../../../src/assets/zh.png'
       i18nBln.value = !i18nBln.value;
       self.$i18n.locale = 'zh'
       window.localStorage.setItem('languageType', 'zh')
       showMessageText('已成功切换为中文', 'success')
       reload()
     } else {
-      i18nImg.value = '@/assets/en.png'
+      i18nImg.value = '../.././src/assets/en.png'
       i18nBln.value = !i18nBln.value;
       self.$i18n.locale = 'en'
       window.localStorage.setItem('languageType', 'en')
@@ -179,11 +163,11 @@ const isChildrenDrawer = (val) => {
 onMounted(() => {
   if (self.$i18n.locale == 'zh') {
     window.localStorage.setItem('languageType', self.$i18n.locale)
-    i18nImg.value = '@/assets/zh.png'
+    i18nImg.value = '../../../src/assets/zh.png'
     i18nBln.value = false;
   } else {
     window.localStorage.setItem('languageType', self.$i18n.locale)
-    i18nImg.value = '@/assets/en.png'
+    i18nImg.value = '../../../src/assets/en.png'
     i18nBln.value = true;
   }
 })
@@ -191,6 +175,7 @@ onMounted(() => {
 
 <style lang="less" scoped>
 @import '@/styles/themes.less';
+
 .header {
   width: 100%;
   height: 50px;
@@ -200,6 +185,7 @@ onMounted(() => {
   color: #fff;
   overflow: hidden;
   background: @navbarTheme;
+
   .collapse-btn {
     width: 50px;
     height: 50px;
@@ -208,33 +194,39 @@ onMounted(() => {
     align-items: center;
     float: left;
     cursor: pointer;
-    margin:0 8px 0 8px;
+    margin: 0 8px 0 8px;
   }
+
   .logo {
     float: left;
     width: 250px;
     line-height: 50px;
   }
+
   .header-right {
     float: right;
     padding-right: 50px;
   }
+
   .header-user-con {
     display: flex;
     height: 50px;
     align-items: center;
+
     .suofangImg {
       width: 30px;
       height: 30px;
       margin-right: 20px;
       cursor: pointer;
     }
+
     .i18nImg {
       width: 20px;
       height: 20px;
       margin-right: 20px;
       cursor: pointer;
     }
+
     .btn-bell,
     .btn-fullscreen {
       position: relative;
@@ -245,6 +237,7 @@ onMounted(() => {
       cursor: pointer;
       margin-top: 5px;
     }
+
     .btn-bell-badge {
       position: absolute;
       right: 0;
@@ -255,21 +248,26 @@ onMounted(() => {
       background: #f56c6c;
       color: #fff;
     }
+
     .btn-bell {
       display: flex;
       justify-content: center;
       align-items: center;
+
       .el-icon-bell {
         color: #fff;
       }
+
       a {
         color: #fff;
       }
     }
+
     .user-avator {
       margin-left: 20px;
       margin-right: 20px;
     }
+
     .user-avator img {
       display: block;
       width: 40px;
@@ -281,9 +279,11 @@ onMounted(() => {
       color: #fff;
       cursor: pointer;
     }
+
     .el-dropdown-menu__item {
       text-align: center;
     }
+
     .navbar-icon {
       margin-left: 20px;
       cursor: pointer;
