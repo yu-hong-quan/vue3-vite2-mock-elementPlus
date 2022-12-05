@@ -75,7 +75,7 @@ export default defineConfig({
     proxy: {
       //代理
       '/api': {
-        target: 'http://192.168.0.124:5000',
+        target: 'https://xiaoyu-vue3-admin.netlify.app',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
