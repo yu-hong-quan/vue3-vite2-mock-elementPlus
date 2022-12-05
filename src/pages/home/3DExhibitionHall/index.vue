@@ -421,48 +421,6 @@ const clearScene = (myObjects) => {
   }
 }
 
-// 更换车辆
-const selectModl = () => {
-  console.log(radio.value);
-  if (radio.value == '1') {
-    modUrl.value = '/src/assets/scene.gltf'
-  } else {
-    modUrl.value = '/src/assets/car.glb'
-  }
-  isLoading.value = true;
-  console.log(gltfMod);
-  // 删除原有模型
-  clearScene(scene)
-  loadingWidth.value = 0;
-  drawer.value = false;
-  load3D();
-}
-
-/**
- * 清除模型，模型中有 group 和 scene,需要进行判断
- * @param scene
- * @returns
- */
-const clearScene = (myObjects) => {
-  console.log(myObjects);
-  // 从scene中删除模型并释放内存
-  if (myObjects.length > 0) {
-    for (var i = 0; i < myObjects.length; i++) {
-      var currObj = myObjects[i];
-      console.log(currObj);
-      // 判断类型
-      if (currObj instanceof THREE.Scene) {
-        var children = currObj.children;
-        for (var i = 0; i < children.length; i++) {
-          deleteGroup(children[i]);
-        }
-      } else {
-        deleteGroup(currObj);
-      }
-      scene.remove(currObj);
-    }
-  }
-}
 
 // 删除group，释放内存
 const deleteGroup = (group) => {
@@ -479,30 +437,6 @@ const deleteGroup = (group) => {
 
 const onDocumentMouseDown = () => {
 
-//加载模型，并将模型加入到场景中
-const load3D = () => {
-  const loader = new GLTFLoader()
-  const dracoLoader = new DRACOLoader()
-  dracoLoader.setDecoderPath('/node_modules/three/examples/js/libs/draco/')
-  dracoLoader.preload()
-  loader.setDRACOLoader(dracoLoader)
-  loader.load(modUrl.value, (gltf) => {
-    gltfMod.value = gltf.scene
-    scene.add(gltf.scene)
-    renderer.render(scene, camera)
-  }, (xhr) => {
-    let load = (xhr.loaded / xhr.total) * 100
-    loadingWidth.value = load
-    console.log(load + '% loaded')
-    if (load >= 100) {
-      setTimeout(() => {
-        isLoading.value = false
-      },1000)
-    }
-  }, (error) => {
-    console.error(error)
-  })
-}
 
 //加载模型，并将模型加入到场景中
 const load3D = () => {
