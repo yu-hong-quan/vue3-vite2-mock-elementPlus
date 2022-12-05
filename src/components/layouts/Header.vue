@@ -20,8 +20,8 @@
             class="suofangImg"
             :src="
               data.fullscreen
-                ? '../../../src/assets/quxiaoquanpin.png'
-                : '../../../src/assets/qunap.png'
+                ? '@/assets/quxiaoquanpin.png'
+                : '@/src/assets/qunap.png'
             "
             alt=""
             @click="handleFullScreen"
@@ -132,14 +132,14 @@ const reload = inject('reload');
 const selecti18n = () => {
   showMessageBox("温馨提示", "warning", "是否确认切换语言?", true, true, 1, () => {
     if (i18nBln.value) {
-      i18nImg.value = '../../../src/assets/zh.png'
+      i18nImg.value = '@/assets/zh.png'
       i18nBln.value = !i18nBln.value;
       self.$i18n.locale = 'zh'
       window.localStorage.setItem('languageType', 'zh')
       showMessageText('已成功切换为中文', 'success')
       reload()
     } else {
-      i18nImg.value = '../../../src/assets/en.png'
+      i18nImg.value = '@/assets/en.png'
       i18nBln.value = !i18nBln.value;
       self.$i18n.locale = 'en'
       window.localStorage.setItem('languageType', 'en')
@@ -179,11 +179,11 @@ const isChildrenDrawer = (val) => {
 onMounted(() => {
   if (self.$i18n.locale == 'zh') {
     window.localStorage.setItem('languageType', self.$i18n.locale)
-    i18nImg.value = '../../../src/assets/zh.png'
+    i18nImg.value = '@/assets/zh.png'
     i18nBln.value = false;
   } else {
     window.localStorage.setItem('languageType', self.$i18n.locale)
-    i18nImg.value = '../../../src/assets/en.png'
+    i18nImg.value = '@/assets/en.png'
     i18nBln.value = true;
   }
 })
