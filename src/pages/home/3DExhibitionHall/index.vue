@@ -18,18 +18,10 @@
           </p>
           <el-button type="primary" @click="isAutoFun"> > 转动车</el-button>
           <el-button type="primary" @click="stop"> > 停止</el-button>
-          <el-button
-            type="primary"
-            @click="isAction ? action() : brackAction()"
-          >
-            > {{ isAction ? '车内视角' : '车外视角' }}</el-button
-          >
+          <el-button type="primary" @click="isAction ? action() : brackAction()">
+            > {{ isAction ? '车内视角' : '车外视角' }}</el-button>
         </div>
-        <el-button
-          type="primary"
-          style="margin-left: 16px"
-          @click="drawer = true"
-        >
+        <el-button type="primary" style="margin-left: 16px" @click="drawer = true">
           > 车辆自定义
         </el-button>
       </div>
@@ -40,21 +32,13 @@
         <template #default>
           <el-divider content-position="left">车身颜色</el-divider>
           <div class="flex">
-            <div
-              @click="setCarColor(index)"
-              v-for="(item, index) in colorAry"
-              :style="{ backgroundColor: item }"
-              :key="index"
-            ></div>
+            <div @click="setCarColor(index)" v-for="(item, index) in colorAry" :style="{ backgroundColor: item }"
+              :key="index"></div>
           </div>
           <el-divider content-position="left">轮毂颜色</el-divider>
           <div class="flex">
-            <div
-              @click="setCarColor(index)"
-              v-for="(item, index) in colorAry"
-              :style="{ backgroundColor: item }"
-              :key="index"
-            ></div>
+            <div @click="setCarColor(index)" v-for="(item, index) in colorAry" :style="{ backgroundColor: item }"
+              :key="index"></div>
           </div>
           <el-divider content-position="left">更换车辆</el-divider>
           <el-radio-group v-model="radio" class="ml-4" @change="selectModl">
@@ -438,68 +422,69 @@ const deleteGroup = (group) => {
 const onDocumentMouseDown = () => {
 
 
-//加载模型，并将模型加入到场景中
-const load3D = () => {
-  const loader = new GLTFLoader()
-  const dracoLoader = new DRACOLoader()
-  dracoLoader.setDecoderPath('/node_modules/three/examples/js/libs/draco/')
-  dracoLoader.preload()
-  loader.setDRACOLoader(dracoLoader)
-  loader.load(modUrl.value, (gltf) => {
-    gltfMod.value = gltf.scene
-    scene.add(gltf.scene)
-    renderer.render(scene, camera)
-  }, (xhr) => {
-    let load = (xhr.loaded / xhr.total) * 100
-    loadingWidth.value = load
-    console.log(load + '% loaded')
-    if (load >= 100) {
-      setTimeout(() => {
-        isLoading.value = false
-      }, 500)
-    }
-  }, (error) => {
-    console.error(error)
-  })
-}
-
-//初始化所有函数
-const init = async () => {
-  setScene()
-  setCamera()
-  setLight()
-  setControls()
-  setGridHelper()
-  setAmbientLight()
-  load3D()
-  addMesh()
-  resizeWindow()
-  loop()
-}
-
-//vue3钩子函数
-onMounted(() => {
-  init();
-  // 添加性能检测插件
-  stats.domElement.style.position = "absolute"; //绝对坐标
-  stats.domElement.style.left = "10px"; // (0,0)px,左上角
-  stats.domElement.style.top = "10px";
-  console.log(document.getElementsByTagName("BasicContainer"));
-  document.querySelector(".basic-container").appendChild(stats.domElement);
-});
-onBeforeUnmount(() => {
-  // vue2的beforeDestroy(vue3中的onBeforeUnmount)内将这些track到的3D物体内存释放,保证体验性能流畅
-  try {
-    scene.clear();
-    renderer.dispose();
-    renderer.forceContextLoss();
-    renderer.content = null;
-    let gl = renderer.domElement.getContext("webgl");
-    gl && gl.getExtension("WEBGL_lose_context").loseContext();
-  } catch (e) {
-    console.log(e);
+  //加载模型，并将模型加入到场景中
+  const load3D = () => {
+    const loader = new GLTFLoader()
+    const dracoLoader = new DRACOLoader()
+    dracoLoader.setDecoderPath('/node_modules/three/examples/js/libs/draco/')
+    dracoLoader.preload()
+    loader.setDRACOLoader(dracoLoader)
+    loader.load(modUrl.value, (gltf) => {
+      gltfMod.value = gltf.scene
+      scene.add(gltf.scene)
+      renderer.render(scene, camera)
+    }, (xhr) => {
+      let load = (xhr.loaded / xhr.total) * 100
+      loadingWidth.value = load
+      console.log(load + '% loaded')
+      if (load >= 100) {
+        setTimeout(() => {
+          isLoading.value = false
+        }, 500)
+      }
+    }, (error) => {
+      console.error(error)
+    })
   }
-});
+
+  //初始化所有函数
+  const init = async () => {
+    setScene()
+    setCamera()
+    setLight()
+    setControls()
+    setGridHelper()
+    setAmbientLight()
+    load3D()
+    addMesh()
+    resizeWindow()
+    loop()
+  }
+
+  //vue3钩子函数
+  onMounted(() => {
+    init();
+    // 添加性能检测插件
+    stats.domElement.style.position = "absolute"; //绝对坐标
+    stats.domElement.style.left = "10px"; // (0,0)px,左上角
+    stats.domElement.style.top = "10px";
+    console.log(document.getElementsByTagName("BasicContainer"));
+    document.querySelector(".basic-container").appendChild(stats.domElement);
+  });
+  onBeforeUnmount(() => {
+    // vue2的beforeDestroy(vue3中的onBeforeUnmount)内将这些track到的3D物体内存释放,保证体验性能流畅
+    try {
+      scene.clear();
+      renderer.dispose();
+      renderer.forceContextLoss();
+      renderer.content = null;
+      let gl = renderer.domElement.getContext("webgl");
+      gl && gl.getExtension("WEBGL_lose_context").loseContext();
+    } catch (e) {
+      console.log(e);
+    }
+  });
+}
 </script>
 
 <style lang="less" scoped>
@@ -507,6 +492,7 @@ onBeforeUnmount(() => {
   width: 100%;
   height: 100%;
   position: relative;
+
   .basic-container {
     // height: 845px;
     height: calc(100% - 10px);
@@ -518,6 +504,7 @@ onBeforeUnmount(() => {
     background-position: bottom;
   }
 }
+
 .maskLoading {
   background: #333334;
   position: absolute;
@@ -556,7 +543,8 @@ onBeforeUnmount(() => {
   left: 0;
   width: 100%;
   user-select: none;
-  > div:nth-child(1) {
+
+  >div:nth-child(1) {
     margin-left: 17px;
     margin-bottom: 20px;
   }
@@ -579,6 +567,7 @@ onBeforeUnmount(() => {
 :deep(.el-overlay) {
   position: absolute;
 }
+
 :deep(.el-drawer__header) {
   margin-bottom: 0;
 }
