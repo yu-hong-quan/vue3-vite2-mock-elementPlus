@@ -419,72 +419,68 @@ const deleteGroup = (group) => {
   });
 }
 
-const onDocumentMouseDown = () => {
-
-
-  //加载模型，并将模型加入到场景中
-  const load3D = () => {
-    const loader = new GLTFLoader()
-    const dracoLoader = new DRACOLoader()
-    dracoLoader.setDecoderPath('/node_modules/three/examples/js/libs/draco/')
-    dracoLoader.preload()
-    loader.setDRACOLoader(dracoLoader)
-    loader.load(modUrl.value, (gltf) => {
-      gltfMod.value = gltf.scene
-      scene.add(gltf.scene)
-      renderer.render(scene, camera)
-    }, (xhr) => {
-      let load = (xhr.loaded / xhr.total) * 100
-      loadingWidth.value = load
-      console.log(load + '% loaded')
-      if (load >= 100) {
-        setTimeout(() => {
-          isLoading.value = false
-        }, 500)
-      }
-    }, (error) => {
-      console.error(error)
-    })
-  }
-
-  //初始化所有函数
-  const init = async () => {
-    setScene()
-    setCamera()
-    setLight()
-    setControls()
-    setGridHelper()
-    setAmbientLight()
-    load3D()
-    addMesh()
-    resizeWindow()
-    loop()
-  }
-
-  //vue3钩子函数
-  onMounted(() => {
-    init();
-    // 添加性能检测插件
-    stats.domElement.style.position = "absolute"; //绝对坐标
-    stats.domElement.style.left = "10px"; // (0,0)px,左上角
-    stats.domElement.style.top = "10px";
-    console.log(document.getElementsByTagName("BasicContainer"));
-    document.querySelector(".basic-container").appendChild(stats.domElement);
-  });
-  onBeforeUnmount(() => {
-    // vue2的beforeDestroy(vue3中的onBeforeUnmount)内将这些track到的3D物体内存释放,保证体验性能流畅
-    try {
-      scene.clear();
-      renderer.dispose();
-      renderer.forceContextLoss();
-      renderer.content = null;
-      let gl = renderer.domElement.getContext("webgl");
-      gl && gl.getExtension("WEBGL_lose_context").loseContext();
-    } catch (e) {
-      console.log(e);
+//加载模型，并将模型加入到场景中
+const load3D = () => {
+  const loader = new GLTFLoader()
+  const dracoLoader = new DRACOLoader()
+  dracoLoader.setDecoderPath('/node_modules/three/examples/js/libs/draco/')
+  dracoLoader.preload()
+  loader.setDRACOLoader(dracoLoader)
+  loader.load(modUrl.value, (gltf) => {
+    gltfMod.value = gltf.scene
+    scene.add(gltf.scene)
+    renderer.render(scene, camera)
+  }, (xhr) => {
+    let load = (xhr.loaded / xhr.total) * 100
+    loadingWidth.value = load
+    console.log(load + '% loaded')
+    if (load >= 100) {
+      setTimeout(() => {
+        isLoading.value = false
+      }, 500)
     }
-  });
+  }, (error) => {
+    console.error(error)
+  })
 }
+
+//初始化所有函数
+const init = async () => {
+  setScene()
+  setCamera()
+  setLight()
+  setControls()
+  setGridHelper()
+  setAmbientLight()
+  load3D()
+  addMesh()
+  resizeWindow()
+  loop()
+}
+
+//vue3钩子函数
+onMounted(() => {
+  init();
+  // 添加性能检测插件
+  stats.domElement.style.position = "absolute"; //绝对坐标
+  stats.domElement.style.left = "10px"; // (0,0)px,左上角
+  stats.domElement.style.top = "10px";
+  console.log(document.getElementsByTagName("BasicContainer"));
+  document.querySelector(".basic-container").appendChild(stats.domElement);
+});
+onBeforeUnmount(() => {
+  // vue2的beforeDestroy(vue3中的onBeforeUnmount)内将这些track到的3D物体内存释放,保证体验性能流畅
+  try {
+    scene.clear();
+    renderer.dispose();
+    renderer.forceContextLoss();
+    renderer.content = null;
+    let gl = renderer.domElement.getContext("webgl");
+    gl && gl.getExtension("WEBGL_lose_context").loseContext();
+  } catch (e) {
+    console.log(e);
+  }
+});
 </script>
 
 <style lang="less" scoped>
